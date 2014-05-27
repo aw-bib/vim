@@ -1,3 +1,8 @@
+---
+Title: vim settings
+Description: personal preferences for vim and a collection of IMHO helpful plugins etc.
+Author: A. Wagner and others (cf. src)
+---
 # vim
 
 These are just setup files mapping my personal preferences. They use a
