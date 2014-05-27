@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Di, 2014/05/13 15:53:15 a.wagner zb0035.zb.kfa-juelich.de>
+" Last change: <Tue, 2014/05/27 05:17:08 arwagner agamemnon>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -410,11 +410,11 @@ if has('gui_running')
    endif
    set background=light
 else
-   " set background=dark
-   colorscheme aw
+   set t_Co=16
+   " seems to be inverted on xfce-term?
+   " need xfce-term to load solarized light defaults
+   set background=dark
 endif
-
-
 
 " Switch to UTF-8
 nmap ,u        :set encoding=utf-8<cr>
