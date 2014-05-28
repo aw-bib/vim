@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Tue, 2014/05/27 05:17:08 arwagner agamemnon>
+" Last change: <Mi, 2014/05/28 14:34:41 a.wagner zb0035.zb.kfa-juelich.de>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -180,9 +180,6 @@ if has("os2")
   map  ,ws       <ESC>:!mode 80,25<CR><CR>
   map  ,wb       <ESC>:!mode 160,50<CR><CR>
   map  ,wn       <ESC>:!mode 80,50<CR><CR>
-  " - clipboard handling via external app
-  imap <F11>     <ESC>:r !clipbrd -r<CR>i
-  vmap <F12>     <ESC>:!clipbrd -we<CR>i 
   " Copy backups to save the EA's
   set backupcopy=yes
   set term=builtin_os2ansi
@@ -193,10 +190,6 @@ if has("os2")
   set listchars=tab:¯\ ,trail:ú,eol:þ
 else
    " on Unix
-   " Get copy/paste work identical on Unix and OS/2
-   imap <F11>     <C-R>*
-   vmap <F12>     "*y
-
    " To get colors with a color xterminal.
    if has("terminfo")
      set t_Co=8
@@ -223,8 +216,8 @@ else
        " All PC's are ix86
        set listchars=tab:»·,trail:·,eol:¬
        set list
-       " open a ROX-Filer window for the current directory
-       map <F7>       <esc>:!rox&<cr><cr>
+       " open a Filer window for the current directory
+       map <F7>       <esc>:!nav&<cr><cr>
        map <M-F12>    :winpos 0 26<cr>:set lines=55 columns=130<cr>
        map <C-F12>    :winpos 0 26<cr>:set lines=25 columns=80<cr>
     endif
@@ -431,6 +424,9 @@ map  <F3>      :Sexplore<cr>
 map  <F4>      :ls<cr>:b
 " Make the current buffer a scratch buffer
 map  <M-F10>   :setlocal buftype=nofile<cr>
+
+" Call vimcommander on F11
+noremap <silent> <F11> :cal VimCommanderToggle()<CR>
 
 " if vim is called without a file, then set buftype to scratch
 " ok, this is like emacs, but handy ;)
