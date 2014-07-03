@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Mi, 2014/05/28 14:34:41 a.wagner zb0035.zb.kfa-juelich.de>
+" Last change: <Thu, 2014/07/03 14:20:28 arwagner bib-pubdb1>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -187,7 +187,7 @@ if has("os2")
   " This tells Vim which characters to show for expanded TABs,
   " trailing whitespace, and end-of-lines.  VERY useful!!
   set list
-  set listchars=tab:¯\ ,trail:ú,eol:þ
+  set listcharo=tab:¯\ ,trail:ú,eol:þ
 else
    " on Unix
    " To get colors with a color xterminal.
@@ -200,10 +200,12 @@ else
      set t_Sf=[3%dm
      set t_Sb=[4%dm
    endif
+   " These chars are utf and should work in general, though they might
+   " break in some strange terminals. The default ^I is unreadable.
+   set listchars=tab:»·,trail:·,eol:¬
+   set list
    if $HOSTTYPE == "alpha"
    " For using Vim with xterm or vt100;  BS and Delete keys
-      set listchars=tab:»·,trail:·,eol:¬
-      set list
       if  &term == "xterm" || &term == "xterm-color"
          set t_kb=
          set t_kD=
@@ -212,10 +214,8 @@ else
       map <M-F12>    :winpos -6 -6<cr>:set lines=55 columns=115<cr>
       map <C-F12>    :winpos -6 -6<cr>:set lines=25 columns=80<cr>
     endif
-    if ($HOSTTYPE =~ "i.86")
-       " All PC's are ix86
-       set listchars=tab:»·,trail:·,eol:¬
-       set list
+    if ($HOSTTYPE =~ "86")
+       " All PC's are 86* like i?86 or x86_64
        " open a Filer window for the current directory
        map <F7>       <esc>:!nav&<cr><cr>
        map <M-F12>    :winpos 0 26<cr>:set lines=55 columns=130<cr>
