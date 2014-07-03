@@ -451,6 +451,7 @@ openbib	latexhelp.txt	/*openbib*
 openright	latexhelp.txt	/*openright*
 ora	dbext.txt	/*ora*
 outlook	outlook.txt	/*outlook*
+outlook-Unicode	outlook.txt	/*outlook-Unicode*
 outlook-configuration	outlook.txt	/*outlook-configuration*
 outlook-install	outlook.txt	/*outlook-install*
 outlook-macro	outlook.txt	/*outlook-macro*
