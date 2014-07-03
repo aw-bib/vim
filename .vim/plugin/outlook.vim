@@ -2,12 +2,11 @@
 " ---------------------------------------------------------------
 " Version:       13.0
 " Authors:       David Fishburn <dfishburn dot vim at gmail dot com>
-" Last Modified: 2013 Sep 25
+" Last Modified: <Do, 2014/07/03 09:29:09  L00WDSWAGNER>
 " Created:       2009 Jan 17
 " Homepage:      http://www.vim.org/scripts/script.php?script_id=3087
 " Help:          :h outlook.txt
 "
-
 
 " Only use this on the Windows platforms
 if !has("win32") && !has("win95")  && !has("win64")
