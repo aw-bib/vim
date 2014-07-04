@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Thu, 2014/07/03 14:20:28 arwagner bib-pubdb1>
+" Last change: <Fri, 2014/07/04 16:54:49 arwagner L00WDSWAGNER>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -18,8 +18,6 @@ set noerrorbells
 set t_vb=
 set visualbell
 
-" Do no expand tabs by default but leave them
-set noexpandtab
 " formatoptions:  Options for the "text format" command ("gq")
 set formatoptions=tcrqn
 
@@ -53,7 +51,17 @@ set sessionoptions=blank,buffers,curdir,folds,winsize,winpos
 
 " shiftwidth:  Number of spaces to use for each
 "              insertion of (auto)indent.
-set shiftwidth=3
+set shiftwidth=4
+"
+" Do no expand tabs by default but leave them. Some filetype plugins
+" will overwrite this.
+set noexpandtab
+
+" Set tabstob to be equivalent to 4 spaces. Set softtabstop to be the
+" same. This is consistent e.g. with Python guidlines.
+set tabstop=4
+set softtabstop=4
+
 " shortmess:   Kind of messages to show.   Abbreviate them all!
 set shortmess=at
 
@@ -69,7 +77,7 @@ set showmode
 " suffixes:    Ignore filename with any of these suffixes
 "              when using the ":edit" command.
 "              Most of these are files created by LaTeX.
-set suffixes=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.ilg,.bbl,.toc,.ind,.axp,.i386,.hpux,.osf1
+set suffixes=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.ilg,.bbl,.toc,.ind,.axp,.i386,.hpux,.osf1,.pyc
 
 " Give a visible choice:
 set wildmenu
@@ -92,9 +100,6 @@ set statusline=[%n]\ %f\ %(\(%M%R)\ %)%y\ %{&ff}%=%{fugitive#statusline()}\ [%2c
 " Allow jump commands for left/right motion to wrap to previous/next
 " line when cursor is on first/last character in the line:
 set whichwrap=<,>,h,l,[,]
-
-set tabstop=4
-set softtabstop=4
 
 " do not update screen while executing macros
 set lazyredraw
