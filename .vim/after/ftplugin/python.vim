@@ -2,7 +2,7 @@
 "
 " Python
 "
-" Last change: <Fri, 2014/07/04 16:54:46 arwagner L00WDSWAGNER>
+" Last change: <Mon, 2014/07/07 13:17:37 arwagner bib-pubdb2>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -14,3 +14,5 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
+
+compiler pylint
