@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Fr, 2014/07/18 09:21:22  L00WDSWAGNER>
+" Last change: <Wed, 2014/08/06 16:06:21 arwagner bib-pubdb2>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -399,8 +399,11 @@ nmap ,ce       :color evening<cr>
 nmap ,cm       :color morning<cr>
 nmap ,ct       :color xterm16<cr>
 
+" Setup solarized colour scheme with light background and high
+" contrast diff mode (giving green/red blocks rathern than text)
 set background=light
 colorscheme solarized
+let g:solarized_diffmode="high"
 
 if has('gui_running')
    if has('win32')
