@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Wed, 2014/08/06 16:06:21 arwagner bib-pubdb2>
+" Last change: <Wed, 2014/08/06 17:18:48 awagner invenio.mlz-garching.de>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -539,4 +539,6 @@ fun! InsertTabWrapper()
     endif
 endfun
 
-source $HOME/.vimrc.local
+if filereadable("$HOME/.vimrc.local")
+    source $HOME/.vimrc.local
+endif
