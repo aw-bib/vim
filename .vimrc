@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Fri, 2014/07/04 16:54:49 arwagner L00WDSWAGNER>
+" Last change: <Fr, 2014/07/18 09:21:22  L00WDSWAGNER>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -416,6 +416,7 @@ endif
 
 " Switch to UTF-8
 nmap ,u        :set encoding=utf-8<cr>
+set encoding=utf-8
 
 " F1 != Help (ThinkPad!!!)
 map! <F1>      <ESC>
@@ -535,3 +536,4 @@ fun! InsertTabWrapper()
     endif
 endfun
 
+source $HOME/.vimrc.local
