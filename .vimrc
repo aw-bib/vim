@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Wed, 2014/08/06 17:18:48 awagner invenio.mlz-garching.de>
+" Last change: <Mon, 2014/08/25 10:16:13 arwagner bib-pubdb1>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -317,6 +317,10 @@ augroup mud
   autocmd BufRead     *.mg                            set filetype=text
   autocmd BufNewFile  *.mg                            set filetype=text
 augroup END
+
+" We hardly ever come across Modula-2, however we have a lot of
+" markdown => prefer Markdown
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " omnicomplete from syntax files on by default
 " but also respect available more fancy omnicomlete functions
