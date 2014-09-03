@@ -25,12 +25,8 @@ setlocal isk+=\
 if filereadable('makefile') || filereadable('Makefile')
    setlocal makeprg=make
 else 
-   if has("win32") || has("unix")
-      setlocal makeprg=latex\ --interaction=nonstopmode\ %
-   else
-    " NOTE: "latex" has to use nonstopmode!!!
-      setlocal makeprg=latex\ %
-   endif
+   " default to lualatex
+   setlocal makeprg=lualatex\ --interaction=nonstopmode\ %
 endif
 
 " inoremap <buffer> <BS> x<Esc>:call SmartBS('{\S*}')<CR>a<BS><BS>
@@ -81,15 +77,15 @@ map <buffer> ,pdf :call TeXPDF()<cr>
 
 fun! TeXFinal()
    if has("os2")
-      let dvips = "dvips "
+      " let dvips = "dvips "
       let mkidx = "mkidx32 "
       let bibtex = "bibtex32 "
    elseif has("win32")
-      let dvips = "dvips "
+      " let dvips = "dvips "
       let mkidx = "makeindex "
       let bibtex = "bibtex "
    else 
-      let dvips = "dvips "
+      " let dvips = "dvips "
       let mkidx = "makeindex "
       let bibtex = "bibtex "
    endif
@@ -118,15 +114,18 @@ fun! TeXFinal()
    execute "b " . main
    make
    execute "b " . main
-   execute "!" . dvips . "-f %<.dvi > %<.ps "
-"  Compress the created PostScript. gv et al can handle ps.gz
+   " lualatex produces a pdf right away. Traditional latex would
+   " create a dvi that needs to be converted to ps.gz or the like
+   " execute "!" . dvips . "-f %<.dvi > %<.ps "
+   "  Compress the created PostScript. gv et al can handle ps.gz
    " execute "! gzip -f  %<.ps"
    :cn
 endfun
 
 " Create a PDF out of the main document.
 fun! TeXPDF()
-   let latex = "pdflatex "
+   " use lualatex to produce a pdf from a utf-8 encoded latex document
+   let latex = "lualatex"
 
    let i = 1
    while i <= bufnr("$")
