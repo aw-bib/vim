@@ -12,6 +12,8 @@ everyone can use this stuff it might be absolutely useless to everyone
 exept myself. But having it in a public repo makes cloning of
 installation so much easier ;)
 
+![Sample display of vim](vim.png)
+
 ## Installation
 
 Just clone and copy.
