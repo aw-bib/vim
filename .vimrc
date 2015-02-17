@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Mon, 2014/08/25 10:16:13 arwagner bib-pubdb1>
+" Last change: <Tue, 2015/02/17 14:54:36 arwagner l00slwagner>
 "--------------------------------------------------
 
 let &titlestring = expand ("%:p:~:.:h")
@@ -29,7 +29,7 @@ set hidden
 " way sometimes when you edit.
 set nohlsearch
 " Set incremental search, that is highlight search tag while
-" typing 
+" typing
 set incsearch
 
 " ignorecase:  ignore the case in search patterns?
@@ -58,11 +58,11 @@ set shiftwidth=4
 set noexpandtab
 
 " Set tabstob to be equivalent to 4 spaces. Set softtabstop to be the
-" same. This is consistent e.g. with Python guidlines.
+" same. This is consistent e.g. with Python guidelines.
 set tabstop=4
 set softtabstop=4
 
-" shortmess:   Kind of messages to show.   Abbreviate them all!
+" shortmess:   Kind of messages to show. Abbreviate them all!
 set shortmess=at
 
 " showcmd:     Show current uncompleted command?  Absolutely!
@@ -71,7 +71,7 @@ set showcmd
 " showmatch:   Show the matching bracket for the last ')'?
 set showmatch
 "
-" showmode:    Show the current mode?  YEEEEEEEEESSSSSSSSSSS!
+" showmode:    Show the current mode? YEEEEEEEEESSSSSSSSSSS!
 set showmode
 
 " suffixes:    Ignore filename with any of these suffixes
@@ -92,9 +92,9 @@ set nostartofline
 " modification, read-only, and whether it is a help buffer
 " (show only when applied), on the right hand side show
 " [curssorposition, line:lines in buffer] percentage of
-" file viewed  
-" set statusline=[%n]\ %f\ %(\ (%M%R%H)%)%=[%2c%V,%3l:%L]\ %p%%\ 
-set statusline=[%n]\ %f\ %(\(%M%R)\ %)%y\ %{&ff}%=%{fugitive#statusline()}\ [%2c%V,%3l:%L]\ %p%%\ 
+" file viewed
+" set statusline=[%n]\ %f\ %(\ (%M%R%H)%)%=[%2c%V,%3l:%L]\ %p%%\
+set statusline=[%n]\ %f\ %(\(%M%R)\ %)%y\ %{&ff}%=%{fugitive#statusline()}\ [%2c%V,%3l:%L]\ %p%%\
 
 " whichwrap:
 " Allow jump commands for left/right motion to wrap to previous/next
@@ -128,20 +128,22 @@ syntax on
 " Version dependend stuff
 " ----------------------------------------------------------------------
 if (version >= 700)
-   " Enable right mouse popups for spellcheck
+   " Enable right mouse pop ups for spellcheck
    set mousemodel=popup_setpos
    " Spell checking
+   " - british english:
    nnoremap ,Se   :setlocal spell spelllang=en_gb<cr>
+   " - galelic
    nnoremap ,Sg   :setlocal spell spelllang=en_gd<cr>
-   " de_20: new german - de_19: old german
-   nnoremap ,Sd   :setlocal spell spelllang=de_20<cr>
+   " - german
+   nnoremap ,Sd   :setlocal spell spelllang=de<cr>
    " ,? in normal mode is ctrl-x-s
    nnoremap ,?    is
 
-	" :te for tabedit (:te is normally tearoff in w32-gui
-   nmap :te    :tabe 
+	" :te for tabedit (:te is normally tear-off in w32-gui
+   nmap :te    :tabe
 
-	" vim 7 introduces undo branches. map old undo functions to the new ones
+	" vim 7 introduces undo branches. Map old undo functions to the new ones
 	nmap u      g-
 	nmap <C-R>  g+
 
@@ -150,7 +152,7 @@ if (version >= 700)
 	if has("gui_running")
 		set cursorline
 	endif
-	
+
 endif
 
 if has("folding")
@@ -163,16 +165,15 @@ if has("vertsplit")
    set splitright
 endif
 
-" Collect all the backup and swap files in one dir
-" First try a local subdir (intended for very important files to
-" keep backup and swapfiles within the central backup), then the
-" golbal ones. Add /tmp for vim to be able to always open a
-" swap/backup file
+" Collect all the backup and swap files in one dir First try a local
+" subdir (intended for very important files to keep backup end swap
+" files within the central backup), then the global ones. Add /tmp for
+" vim to be able to always open a swap/backup file
 set backupdir=./.vimswp,$HOME/tmp,/tmp
 set directory=./.vimswp,$HOME/tmp,/tmp
 
 " ----------------------------------------------------------------------
-" Platformdependend stuff: Care for OS/2 and Unix
+" Platform dependent stuff: Care for OS/2 and Unix
 " ----------------------------------------------------------------------
 " Note about $HOSTTYPE
 "      has("os2")            = OS/2 Warp
@@ -180,7 +181,7 @@ set directory=./.vimswp,$HOME/tmp,/tmp
 "      alpha                 = True64  (Alpha)
 
 if has("os2")
-  " On OS/2: 
+  " On OS/2:
   " - Use mode command to resize terminal winodws to Small, Big, Normal
   map  ,ws       <ESC>:!mode 80,25<CR><CR>
   map  ,wb       <ESC>:!mode 160,50<CR><CR>
@@ -235,92 +236,96 @@ color aw
 " previous position Note: you may have to change ~/.viminfo to
 " point to a directory/file of your choice.  By Dr. Charles
 " Campbell.
-set viminfo='10,\"100,:20,n~/.viminfo 
+set viminfo='10,\"100,:20,n~/.viminfo
 au BufReadPost * if line("'\"")|execute("normal `\"")|endif
 
 
-" NOTE for autocmd's: vim handle new files not the same like
-" existing files, that is, there is a diffrence between BufRead
-" and BufNewFile!  Empty files are _new_ files.  ADDITIONALLY:
-" from V6 on autocommands can be replaced largely by filetpype
+" NOTE for autocmd's: vim handle new files not the same like existing
+" files, that is, there is A difference between BufRead and
+" BufNewFile!  Empty files are _new_ files.
+" ADDITIONALLY:
+" from V6 on auto commands can be replaced largely by file type
 " plugins (which gives a more readable config...)!
 
 " Use the augroups only to define additional filetypes, then
 " rely on ftplugins to work and load the settings as expected.
 " Note that ftplugins must be located in
-" ~/.vim/after/ftplugins/, otherwise systemdefaults overwrite
-" usersettings.
+" ~/.vim/after/ftplugins/, otherwise system defaults overwrite
+" user settings.
 
 filetype plugin on
 
 augroup mail
 " use vim as editor for (PM)Mail. PMMailfiles are called .BOD
+" also handle mutt and friends as well as other mail clients like
+" Zimbar (mail*)
   au!
-  autocmd BufRead     *.bod,mutt-*,pico*              set filetype=mail
-  autocmd BufNewFile  *.bod,mutt-*,pico*              set filetype=mail
-  autocmd BufRead     *.chat                          set filetype=chat
-  autocmd BufRead     *.log,*.res                     set filetype=log
-  autocmd BufNewFile  *.sieve                         set ft=sieve
-  autocmd BufRead     *.sieve                         set ft=sieve
+  autocmd BufRead     mail*                   set filetype=mail
+  autocmd BufRead     *.bod,mutt-*,pico*      set filetype=mail
+  autocmd BufNewFile  *.bod,mutt-*,pico*      set filetype=mail
+  autocmd BufRead     *.chat                  set filetype=chat
+  autocmd BufRead     *.log,*.res             set filetype=log
+  autocmd BufNewFile  *.sieve                 set filetype=sieve
+  autocmd BufRead     *.sieve                 set filetype=sieve
 augroup END
 
 augroup chess
   au!
-  autocmd BufRead     *.sor,*.sso                     set filetype=scid
+  autocmd BufRead     *.sor,*.sso             set filetype=scid
   " eng: polyglot's ini-files, using scids syntax is ok here
-  autocmd BufRead     *.eng                           set filetype=scid
+  autocmd BufRead     *.eng                   set filetype=scid
 augroup END
 
 " for historic reasons some Maple Text-Files are called mtx
 " Nowadays the canonical name is mpl
 augroup maple
   au!
-  autocmd BufRead     *.mtx                           set filetype=maple
-  autocmd BufNewFile  *.mtx                           set filetype=maple
-  autocmd BufRead     *.map                           set filetype=maple
-  autocmd BufNewFile  *.map                           set filetype=maple
+  autocmd BufRead     *.mtx                   set filetype=maple
+  autocmd BufNewFile  *.mtx                   set filetype=maple
+  autocmd BufRead     *.map                   set filetype=maple
+  autocmd BufNewFile  *.map                   set filetype=maple
 augroup END
 
 augroup mysql
   au!
-  autocmd BufRead     *.dump                          set filetype=mysql
-  autocmd BufNewFile  *.dump                          set filetype=mysql
+  autocmd BufRead     *.dump                  set filetype=mysql
+  autocmd BufNewFile  *.dump                  set filetype=mysql
 augroup END
 
 augroup MuPAD
   au!
-  autocmd BufRead     *.mnb                           set filetype=mupad
-  autocmd BufRead     *.mupad                         set filetype=mupad
-  autocmd BufNewFile  *.mnb                           set filetype=mupad
-  autocmd BufNewFile  *.mupad                         set filetype=mupad
+  autocmd BufRead     *.mnb                   set filetype=mupad
+  autocmd BufRead     *.mupad                 set filetype=mupad
+  autocmd BufNewFile  *.mnb                   set filetype=mupad
+  autocmd BufNewFile  *.mupad                 set filetype=mupad
 augroup END
 
 augroup Physics
-  autocmd BufRead     *.kumac                         set filetype=paw
-  autocmd BufRead     *.dta                           set filetype=parameter
-  autocmd BufRead     *.scn                           set filetype=parameter
-  autocmd BufRead     *.C                             set filetype=root
-  autocmd BufRead     *.input                         set filetype=axiom
-  autocmd BufRead     *.mma                           set filetype=mma
-  autocmd BufNewFile  *.mma                           set filetype=mma
-  autocmd BufRead     *.prc                           set filetype=form
-  autocmd BufNewFile  *.prc                           set filetype=form
-  autocmd BufRead     *.fh                            set filetype=form
-  autocmd BufNewFile  *.fh                            set filetype=form
+  autocmd BufRead     *.kumac                 set filetype=paw
+  autocmd BufRead     *.dta                   set filetype=parameter
+  autocmd BufRead     *.scn                   set filetype=parameter
+  autocmd BufRead     *.C                     set filetype=root
+  autocmd BufRead     *.input                 set filetype=axiom
+  autocmd BufRead     *.mma                   set filetype=mma
+  autocmd BufNewFile  *.mma                   set filetype=mma
+  autocmd BufRead     *.prc                   set filetype=form
+  autocmd BufNewFile  *.prc                   set filetype=form
+  autocmd BufRead     *.fh                    set filetype=form
+  autocmd BufNewFile  *.fh                    set filetype=form
 augroup END
 
 augroup wiki
-  autocmd BufRead     wwwzb.fz-juelich.de*            set filetype=mediawiki
+  autocmd BufRead     wwwzb.fz-juelich.de*    set filetype=mediawiki
+  " We hardly ever come across Modula-2, however we have a lot of
+  " markdown => prefer Markdown
+  autocmd BufNewFile,BufReadPost *.md         set filetype=markdown
 augroup END
 
 augroup mud
-  autocmd BufRead     *.mg                            set filetype=text
-  autocmd BufNewFile  *.mg                            set filetype=text
+  autocmd BufRead     *.mg                    set filetype=text
+  autocmd BufNewFile  *.mg                    set filetype=text
 augroup END
 
-" We hardly ever come across Modula-2, however we have a lot of
-" markdown => prefer Markdown
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " omnicomplete from syntax files on by default
 " but also respect available more fancy omnicomlete functions
@@ -332,22 +337,24 @@ if has("autocmd") && exists("+omnifunc")
 endif
 
 augroup skeletons
-  :autocmd BufNewFile  *.c       0r $CHOICESPATH/Templates/C.c
-  :autocmd BufNewFile  *.h       0r $CHOICESPATH/Templates/C.h
-  :autocmd BufNewFile  *.f       0r $CHOICESPATH/Templates/Fortran.f
-  :autocmd BufNewFile  *.pl      0r $CHOICESPATH/Templates/Perl.pl
-  :autocmd BufNewFile  *.tex     0r $CHOICESPATH/Templates/latex.tex
-  :autocmd BufNewFile  *.mp      0r $CHOICESPATH/Templates/MuPad.mp
-  :autocmd BufNewFile  *.mupad   0r $CHOICESPATH/Templates/MuPad.mupad
-  :autocmd BufNewFile  *.mma     0r $CHOICESPATH/Templates/math.mma
+  :autocmd BufNewFile  *.c       0r $HOME/Templates/C.c
+  :autocmd BufNewFile  *.h       0r $HOME/Templates/C.h
+  :autocmd BufNewFile  *.f       0r $HOME/Templates/Fortran.f
+  :autocmd BufNewFile  *.pl      0r $HOME/Templates/Perl.pl
+  :autocmd BufNewFile  *.tex     0r $HOME/Templates/latex.tex
+  :autocmd BufNewFile  *.mp      0r $HOME/Templates/MuPad.mp
+  :autocmd BufNewFile  *.mupad   0r $HOME/Templates/MuPad.mupad
+  :autocmd BufNewFile  *.mma     0r $HOME/Templates/math.mma
+  :autocmd BufNewFile  *.md      0r $HOME/Templates/markdown.md
+  :autocmd BufNewFile  *.py      0r $HOME/Templates/python.py
 
-  :autocmd BufNewFile  *.mysql   0r $CHOICESPATH/Templates/mysql.mysql
-  :autocmd BufNewFile  *.sql     0r $CHOICESPATH/Templates/sql.sql
-  :autocmd BufNewFile  *.php     0r $CHOICESPATH/Templates/php4.php
+  :autocmd BufNewFile  *.mysql   0r $HOME/Templates/mysql.mysql
+  :autocmd BufNewFile  *.sql     0r $HOME/Templates/sql.sql
+  :autocmd BufNewFile  *.php     0r $HOME/Templates/php4.php
 
-  :autocmd BufNewFile  *.m       set ft=mma   | 0r $CHOICESPATH/Templates/math.mma
-  :autocmd BufNewFile  *.kumac   set ft=paw   | 0r $CHOICESPATH/Templates/paw.kumac
-  :autocmd BufNewFile  *.dump    set ft=mysql | 0r $CHOICESPATH/Templates/mysql.mysql
+  :autocmd BufNewFile  *.m       set ft=mma   | 0r $HOME/Templates/math.mma
+  :autocmd BufNewFile  *.kumac   set ft=paw   | 0r $HOME/Templates/paw.kumac
+  :autocmd BufNewFile  *.dump    set ft=mysql | 0r $HOME/Templates/mysql.mysql
 augroup END
 
 " ----------------------------------------------------------------------
@@ -373,7 +380,7 @@ map  ,m        :make<cr>
 vmap <TAB>     >
 vmap <S-TAB>   <
 
-" :set hlsearch, then select text * will highlight all occurences
+" :set hlsearch, then select text * will highlight all occurrences
 vmap * "yy:let @/='\(' . @y . '\)'<cr>
 
 " In normal mode: TAB and Shift-TAB to change buffers
@@ -404,7 +411,7 @@ nmap ,cm       :color morning<cr>
 nmap ,ct       :color xterm16<cr>
 
 " Setup solarized colour scheme with light background and high
-" contrast diff mode (giving green/red blocks rathern than text)
+" contrast diff mode (giving green/red blocks rather than text)
 set background=light
 colorscheme solarized
 let g:solarized_diffmode="high"
@@ -418,7 +425,7 @@ else
    set t_Co=16
    " seems to be inverted on xfce-term?
    " need xfce-term to load solarized light defaults
-   set background=dark
+   set background=light
 endif
 
 " Switch to UTF-8
@@ -543,6 +550,6 @@ fun! InsertTabWrapper()
     endif
 endfun
 
-if filereadable("$HOME/.vimrc.local")
+if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
