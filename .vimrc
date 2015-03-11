@@ -4,10 +4,18 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Tue, 2015/02/17 14:54:36 arwagner l00slwagner>
+" Last change: <Wed, 2015/03/11 09:12:51 arwagner l00slwagner>
 "--------------------------------------------------
 
-let &titlestring = expand ("%:p:~:.:h")
+set titlestring=%f%=\ %(%M%R%)\ %y 
+if &term == "screen"
+  set t_ts=^[k
+  set t_fs=^[\
+endif
+if &term == "screen" || &term == "xterm"
+  set title
+endif
+
 
 " backspace:  '2' allows backspacing" over
 " indentation, end-of-line, and start-of-line.
@@ -94,7 +102,7 @@ set nostartofline
 " [curssorposition, line:lines in buffer] percentage of
 " file viewed
 " set statusline=[%n]\ %f\ %(\ (%M%R%H)%)%=[%2c%V,%3l:%L]\ %p%%\
-set statusline=[%n]\ %f\ %(\(%M%R)\ %)%y\ %{&ff}%=%{fugitive#statusline()}\ [%2c%V,%3l:%L]\ %p%%\
+set statusline=[%n]\ %f\ %(\(%M%R)\ %)%y\ %{&ff}%=%{fugitive#statusline()}\ [%2c%V,%3l:%L]\ %p%%
 
 " whichwrap:
 " Allow jump commands for left/right motion to wrap to previous/next
