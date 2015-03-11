@@ -8,9 +8,6 @@
 " Last update: Wed, 2004/03/17, 11:26:22
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" The address book... Mainly just some iabbrs
-source ~/.vim/addressbook.vim
-
 " Look up addresses via address command
 map ,a :r!address -s -f email <cword><cr>$kbdwJ$a
 
@@ -81,9 +78,6 @@ setlocal nomodeline
 " Set 'formatoptions' to break text lines,
 " and insert the comment leader ">" when hitting <CR> or using "o".
 setlocal fo+=tcroql
-iab <buffer> Yhome       http://www.stellarcom.org/index.html
-iab <buffer> Yplucker    http://plucker.gnu-designs.com
-iab <buffer> Yplucker2   http://www.stellarcom.org/plucker/os2_bins/index.html  
 
 " Inserting an ellipsis to indicate deleted text
 iab  <buffer> Yell  [...]
