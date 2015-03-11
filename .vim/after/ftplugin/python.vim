@@ -2,7 +2,7 @@
 "
 " Python
 "
-" Last change: <Wed, 2014/08/06 10:42:49 arwagner bib-pubdb2>
+" Last change: <Tue, 2015/02/24 12:52:54 arwagner l00slwagner>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -36,4 +36,4 @@ compiler pylint
 "
 
 " highlight lines longer than 80 chars
-:match ErrorMsg '\%>80v.\+'
+:match Folded '\%>80v.\+'
