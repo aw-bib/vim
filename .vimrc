@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Mon, 2015/05/18 16:40:50 arwagner l00slwagner>
+" Last change: <Mon, 2015/05/18 20:25:06 arwagner agamemnon>
 "----------------------------------------------------------------------
 
 " enable pathogen to handle external packages we use
@@ -393,7 +393,7 @@ map  <F2>      <ESC>wq
 " Load file
 nnoremap <silent> <F3> :NERDTree<CR>
 " Toggle tagbar
-nnoremap <silent> <M-F3> :TagbarToggle<CR>
+nnoremap <silent> <C-F3> :TagbarToggle<CR>
 
 " List buffers
 map  <F4>      :ls<cr>:b
