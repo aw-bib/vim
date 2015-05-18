@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "--------------------------------------------------
-" Last change: <Wed, 2015/03/11 09:12:51 arwagner l00slwagner>
+" Last change: <Fri, 2015/04/17 10:58:36 arwagner l00slwagner>
 "--------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
@@ -327,6 +327,7 @@ augroup wiki
   " We hardly ever come across Modula-2, however we have a lot of
   " markdown => prefer Markdown
   autocmd BufNewFile,BufReadPost *.md         set filetype=markdown
+  autocmd BufNewFile,BufReadPost github.com*  set filetype=markdown
 augroup END
 
 augroup mud
