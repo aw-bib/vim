@@ -3,9 +3,14 @@
 "     for Unix and OS/2:  ~/.vimrc
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
-"--------------------------------------------------
-" Last change: <Fri, 2015/04/17 10:58:36 arwagner l00slwagner>
-"--------------------------------------------------
+"----------------------------------------------------------------------
+" Last change: <Mon, 2015/05/18 16:40:50 arwagner l00slwagner>
+"----------------------------------------------------------------------
+
+" enable pathogen to handle external packages we use
+execute pathogen#infect()
+"set statusline+=%#warningmsg#
+
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
 if &term == "screen"
@@ -15,7 +20,6 @@ endif
 if &term == "screen" || &term == "xterm"
   set title
 endif
-
 
 " backspace:  '2' allows backspacing" over
 " indentation, end-of-line, and start-of-line.
@@ -163,14 +167,14 @@ if (version >= 700)
 
 endif
 
+" highlight column after 'textwidth'
+if (version >= 730)
+    set colorcolumn=+1
+endif
+
 if has("folding")
    " By default: don't fold text automatically
    set foldmethod=manual
-endif
-
-" vsplit opens window on the right hand side
-if has("vertsplit")
-   set splitright
 endif
 
 " Collect all the backup and swap files in one dir First try a local
@@ -179,66 +183,6 @@ endif
 " vim to be able to always open a swap/backup file
 set backupdir=./.vimswp,$HOME/tmp,/tmp
 set directory=./.vimswp,$HOME/tmp,/tmp
-
-" ----------------------------------------------------------------------
-" Platform dependent stuff: Care for OS/2 and Unix
-" ----------------------------------------------------------------------
-" Note about $HOSTTYPE
-"      has("os2")            = OS/2 Warp
-"      i.86                  = Linux   (Intel)
-"      alpha                 = True64  (Alpha)
-
-if has("os2")
-  " On OS/2:
-  " - Use mode command to resize terminal winodws to Small, Big, Normal
-  map  ,ws       <ESC>:!mode 80,25<CR><CR>
-  map  ,wb       <ESC>:!mode 160,50<CR><CR>
-  map  ,wn       <ESC>:!mode 80,50<CR><CR>
-  " Copy backups to save the EA's
-  set backupcopy=yes
-  set term=builtin_os2ansi
-  " 'list' + 'listchars': Great new feature of vim-5.3!
-  " This tells Vim which characters to show for expanded TABs,
-  " trailing whitespace, and end-of-lines.  VERY useful!!
-  set list
-  set listcharo=tab:¯\ ,trail:ú,eol:þ
-else
-   " on Unix
-   " To get colors with a color xterminal.
-   if has("terminfo")
-     set t_Co=8
-     set t_Sf=[3%p1%dm
-     set t_Sb=[4%p1%dm
-   else
-     set t_Co=8
-     set t_Sf=[3%dm
-     set t_Sb=[4%dm
-   endif
-   " These chars are utf and should work in general, though they might
-   " break in some strange terminals. The default ^I is unreadable.
-   set listchars=tab:»·,trail:·,eol:¬
-   set list
-   if $HOSTTYPE == "alpha"
-   " For using Vim with xterm or vt100;  BS and Delete keys
-      if  &term == "xterm" || &term == "xterm-color"
-         set t_kb=
-         set t_kD=
-      endif
-      fixdel
-      map <M-F12>    :winpos -6 -6<cr>:set lines=55 columns=115<cr>
-      map <C-F12>    :winpos -6 -6<cr>:set lines=25 columns=80<cr>
-    endif
-    if ($HOSTTYPE =~ "86")
-       " All PC's are 86* like i?86 or x86_64
-       " open a Filer window for the current directory
-       map <F7>       <esc>:!nav&<cr><cr>
-       map <M-F12>    :winpos 0 26<cr>:set lines=55 columns=130<cr>
-       map <C-F12>    :winpos 0 26<cr>:set lines=25 columns=80<cr>
-    endif
-endif
-
-" use own color map DO NOT MOVE to earlier line!!
-color aw
 
 " Using viminfo to cause each invocation of vim to return to
 " previous position Note: you may have to change ~/.viminfo to
@@ -334,7 +278,6 @@ augroup mud
   autocmd BufRead     *.mg                    set filetype=text
   autocmd BufNewFile  *.mg                    set filetype=text
 augroup END
-
 
 " omnicomplete from syntax files on by default
 " but also respect available more fancy omnicomlete functions
@@ -448,14 +391,14 @@ map  <F1>      <ESC>
 " Save
 map  <F2>      <ESC>wq
 " Load file
-map  <F3>      :Sexplore<cr>
+nnoremap <silent> <F3> :NERDTree<CR>
+" Toggle tagbar
+nnoremap <silent> <M-F3> :TagbarToggle<CR>
+
 " List buffers
 map  <F4>      :ls<cr>:b
 " Make the current buffer a scratch buffer
 map  <M-F10>   :setlocal buftype=nofile<cr>
-
-" Call vimcommander on F11
-noremap <silent> <F11> :cal VimCommanderToggle()<CR>
 
 " if vim is called without a file, then set buftype to scratch
 " ok, this is like emacs, but handy ;)
@@ -562,3 +505,31 @@ endfun
 if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
+
+"----------------------------------------------------------------------
+" Package specific configs
+"----------------------------------------------------------------------
+
+" syntastic
+"" set statusline+=%{SyntasticStatuslineFlag()}
+"" set statusline+=%*
+
+set statusline+=%#warningmsg#
+
+let g:syntastic_error_symbol = "âœ—"
+let g:syntastic_warning_symbol = "âš "
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" syntastic
+let g:tagbar_compact = 1
+
+
+" Setup solarized colour scheme with light background and high
+" contrast diff mode (giving green/red blocks rather than text)
+set background=light
+colorscheme solarized
+let g:solarized_diffmode="high"
