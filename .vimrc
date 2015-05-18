@@ -4,13 +4,8 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Mon, 2015/05/18 20:25:06 arwagner agamemnon>
+" Last change: <Mon, 2015/05/18 23:16:01 arwagner agamemnon>
 "----------------------------------------------------------------------
-
-" enable pathogen to handle external packages we use
-execute pathogen#infect()
-"set statusline+=%#warningmsg#
-
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
 if &term == "screen"
@@ -167,10 +162,27 @@ if (version >= 700)
 
 endif
 
+" To disable a plugin, add it's bundle name to the following list
+let g:pathogen_disabled = []
+
 " highlight column after 'textwidth'
 if (version >= 730)
     set colorcolumn=+1
 endif
+
+if (version < 700)
+    call add(g:pathogen_disabled, 'tagbar')
+
+endif
+if (version < 720)
+    call add(g:pathogen_disabled, 'nerdtree')
+endif
+
+if (version < 730)
+    call add(g:pathogen_disabled, 'gundo')
+
+endif
+
 
 if has("folding")
    " By default: don't fold text automatically
@@ -362,12 +374,6 @@ nmap ,ce       :color evening<cr>
 nmap ,cm       :color morning<cr>
 nmap ,ct       :color xterm16<cr>
 
-" Setup solarized colour scheme with light background and high
-" contrast diff mode (giving green/red blocks rather than text)
-set background=light
-colorscheme solarized
-let g:solarized_diffmode="high"
-
 if has('gui_running')
    if has('win32')
       set guifont=Courier_New:h11:cANSI
@@ -509,6 +515,10 @@ endif
 "----------------------------------------------------------------------
 " Package specific configs
 "----------------------------------------------------------------------
+" enable pathogen to handle external packages we use
+" call it here as this allows to disable some plugins based on the
+" environment (e.g. higher python version required)
+execute pathogen#infect()
 
 " syntastic
 "" set statusline+=%{SyntasticStatuslineFlag()}
@@ -516,17 +526,16 @@ endif
 
 set statusline+=%#warningmsg#
 
-let g:syntastic_error_symbol = "✗"
-let g:syntastic_warning_symbol = "⚠"
+let g:syntastic_error_symbol             =  "✗"
+let g:syntastic_warning_symbol           =  "⚠"
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_always_populate_loc_list =  1
+let g:syntastic_auto_loc_list            =  1
+let g:syntastic_check_on_open            =  1
+let g:syntastic_check_on_wq              =  0
 
 " syntastic
-let g:tagbar_compact = 1
-
+let g:tagbar_compact                     =  1
 
 " Setup solarized colour scheme with light background and high
 " contrast diff mode (giving green/red blocks rather than text)
