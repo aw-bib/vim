@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Mon, 2015/05/18 23:16:01 arwagner agamemnon>
+" Last change: <Tue, 2015/05/19 15:20:41 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
@@ -174,11 +174,11 @@ if (version < 700)
     call add(g:pathogen_disabled, 'tagbar')
 
 endif
-if (version < 720)
+if (version < 702)
     call add(g:pathogen_disabled, 'nerdtree')
 endif
 
-if (version < 730)
+if (version < 703)
     call add(g:pathogen_disabled, 'gundo')
 
 endif
