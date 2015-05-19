@@ -1,0 +1,17 @@
+snippet #!
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+endsnippet
+
+snippet imp
+import ${0:module}
+endsnippet
+
+# New Function
+snippet def
+def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
+    """
+    ${3:docstring for $1}
+	"""
+${0}
+endsnippet
