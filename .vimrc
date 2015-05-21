@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2015/05/19 15:20:41 arwagner l00slwagner>
+" Last change: <Thu, 2015/05/21 11:27:55 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
@@ -120,6 +120,11 @@ set ruler
 set autowrite
 set cpt=.,b,u
 
+" These chars are utf and should work in general, though they might
+" break in some strange terminals. The default ^I is unreadable.
+set listchars=tab:»·,trail:·,eol:¬
+set list
+
 " Get rid of the toolbar in GUI version
 set guioptions-=T
 set guioptions+=c
@@ -170,19 +175,14 @@ if (version >= 730)
     set colorcolumn=+1
 endif
 
-if (version < 700)
-    call add(g:pathogen_disabled, 'tagbar')
-
-endif
 if (version < 702)
+    call add(g:pathogen_disabled, 'tagbar')
     call add(g:pathogen_disabled, 'nerdtree')
 endif
 
 if (version < 703)
     call add(g:pathogen_disabled, 'gundo')
-
 endif
-
 
 if has("folding")
    " By default: don't fold text automatically
@@ -397,9 +397,10 @@ map  <F1>      <ESC>
 " Save
 map  <F2>      <ESC>wq
 " Load file
-nnoremap <silent> <F3> :NERDTree<CR>
+nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " Toggle tagbar
-nnoremap <silent> <C-F3> :TagbarToggle<CR>
+nnoremap <silent> <F5> :TagbarToggle<CR>
+nnoremap <silent> <F6> :GundoToggle<CR>
 
 " List buffers
 map  <F4>      :ls<cr>:b
