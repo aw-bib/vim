@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2015/05/21 11:27:55 arwagner l00slwagner>
+" Last change: <Tue, 2015/06/23 17:41:07 arwagner agamemnon>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
@@ -378,6 +378,9 @@ if has('gui_running')
    if has('win32')
       set guifont=Courier_New:h11:cANSI
    endif
+   if has('gui_macvim')
+      set guifont=Courier:h14
+   endif
    set background=light
 else
    set t_Co=16
@@ -534,6 +537,7 @@ let g:syntastic_always_populate_loc_list =  1
 let g:syntastic_auto_loc_list            =  1
 let g:syntastic_check_on_open            =  1
 let g:syntastic_check_on_wq              =  0
+let g:syntastic_javascript_checkers = ['jshint']
 
 " syntastic
 let g:tagbar_compact                     =  1
