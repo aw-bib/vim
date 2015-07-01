@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2015/06/23 17:41:07 arwagner agamemnon>
+" Last change: <Wed, 2015/07/01 15:05:02 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
@@ -171,7 +171,7 @@ endif
 let g:pathogen_disabled = []
 
 " highlight column after 'textwidth'
-if (version >= 730)
+if (version >= 703)
     set colorcolumn=+1
 endif
 
