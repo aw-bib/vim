@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Wed, 2015/07/01 15:05:02 arwagner l00slwagner>
+" Last change: <Thu, 2015/07/02 10:04:40 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
@@ -512,10 +512,6 @@ fun! InsertTabWrapper()
     endif
 endfun
 
-if filereadable(expand("$HOME/.vimrc.local"))
-    source $HOME/.vimrc.local
-endif
-
 "----------------------------------------------------------------------
 " Package specific configs
 "----------------------------------------------------------------------
@@ -547,3 +543,10 @@ let g:tagbar_compact                     =  1
 set background=light
 colorscheme solarized
 let g:solarized_diffmode="high"
+
+" Load local changes to the above to adopt to user specific local
+" needs
+if filereadable(expand("$HOME/.vimrc.local"))
+    source $HOME/.vimrc.local
+endif
+
