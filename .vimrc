@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2015/07/02 10:04:40 arwagner l00slwagner>
+" Last change: <Thu, 2015/07/02 13:11:48 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y 
@@ -511,6 +511,12 @@ fun! InsertTabWrapper()
         return "\<c-p>"
     endif
 endfun
+
+" source the local file once to add potential disable calls for
+" pathogen
+if filereadable(expand("$HOME/.vimrc.local"))
+    source $HOME/.vimrc.local
+endif
 
 "----------------------------------------------------------------------
 " Package specific configs
