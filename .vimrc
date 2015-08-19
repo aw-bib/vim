@@ -4,10 +4,10 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2015/07/02 13:11:48 arwagner l00slwagner>
+" Last change: <Tue, 2015/08/18 17:18:36 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
-set titlestring=%f%=\ %(%M%R%)\ %y 
+set titlestring=%f%=\ %(%M%R%)\ %y
 if &term == "screen"
   set t_ts=^[k
   set t_fs=^[\
@@ -390,7 +390,7 @@ else
 endif
 
 " Switch to UTF-8
-nmap ,u        :set encoding=utf-8<cr>
+nmap ,U        :set encoding=utf-8<cr>
 set encoding=utf-8
 
 " F1 != Help (ThinkPad!!!)
@@ -407,6 +407,7 @@ nnoremap <silent> <F6> :GundoToggle<CR>
 
 " List buffers
 map  <F4>      :ls<cr>:b
+
 " Make the current buffer a scratch buffer
 map  <M-F10>   :setlocal buftype=nofile<cr>
 
@@ -550,9 +551,50 @@ set background=light
 colorscheme solarized
 let g:solarized_diffmode="high"
 
+" Customize airline statusbar
+" Disable syntastics integratio to save space
+let g:airline#extensions#syntastic#enabled = 0
+" shorten long branch names to 10 chars
+let g:airline#extensions#branch#displayed_head_limit = 10
+let g:airline_powerline_fonts=0
+" sol is more readable and gives a cleaner spilt of the status bar,
+" then the default solarized, especially in the middle sections
+let g:airline_theme="sol"
+" shorten mode indicators
+let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n'  : 'N',
+      \ 'i'  : 'I',
+      \ 'R'  : 'R',
+      \ 'c'  : 'C',
+      \ 'v'  : 'V',
+      \ 'V'  : 'V',
+      \ '' : 'V',
+      \ 's'  : 'S',
+      \ 'S'  : 'S',
+      \ '' : 'S',
+      \ }
+
+" let g:airline_left_sep = '»'
+" let g:airline_left_sep = '▶'
+" let g:airline_right_sep = '«'
+" let g:airline_right_sep = '◀'
+
+" Use Unite for file and buffer handling
+nnoremap <silent> ,u :Unite buffer file_rec/git file<CR>
+nnoremap <silent> ,l :Unite line<CR>
+call unite#custom#profile('default', 'context', {
+\   'start_insert': 1,
+\   'winheight': 10,
+\   'direction': 'botright',
+\   'prompt': '> ',
+\ })
+
 " Load local changes to the above to adopt to user specific local
 " needs
 if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
+
+
 
