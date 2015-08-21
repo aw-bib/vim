@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2015/08/18 17:18:36 arwagner l00slwagner>
+" Last change: <Thu, 2015/08/20 14:32:33 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -556,6 +556,8 @@ let g:solarized_diffmode="high"
 let g:airline#extensions#syntastic#enabled = 0
 " shorten long branch names to 10 chars
 let g:airline#extensions#branch#displayed_head_limit = 10
+let g:airline#extensions#whitespace#trailing_format = 't[%s]'
+let g:airline#extensions#whitespace#mixed_indent_format = 'i[%s]'
 let g:airline_powerline_fonts=0
 " sol is more readable and gives a cleaner spilt of the status bar,
 " then the default solarized, especially in the middle sections
