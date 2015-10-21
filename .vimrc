@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2015/08/20 14:32:33 arwagner l00slwagner>
+" Last change: <Fri, 2015/10/16 16:23:17 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -128,6 +128,8 @@ set list
 " Get rid of the toolbar in GUI version
 set guioptions-=T
 set guioptions+=c
+set guioptions=aegimrLtc
+set guioptions=aegirLtc
 
 " by default use ,<anything> for maps
 let mapleader = ","
