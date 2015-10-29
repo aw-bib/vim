@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Fri, 2015/10/16 16:23:17 arwagner l00slwagner>
+" Last change: <Thu, 2015/10/29 08:22:25 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -352,19 +352,19 @@ vmap * "yy:let @/='\(' . @y . '\)'<cr>
 " In normal mode: TAB and Shift-TAB to change buffers
 nmap <TAB>     :bn<CR>
 nmap <S-TAB>   :bp<CR>
-
-" In insert mode: If cursor on whitespace insert tab, otherwise
-" do completion (via ^P)
-imap <C-Space>  <c-p>
-"imap <C-Space>     <c-r>=InsertTabWrapper()<cr>
-
-" CTRL-Tab is Next window (works only for gvim)
-noremap  <C-Tab> <C-W>w
-inoremap <C-Tab> <C-O><C-W>w
-cnoremap <C-Tab> <C-C><C-W>w
-noremap  <C-S-Tab> <C-W>W
-inoremap <C-S-Tab> <C-O><C-W>W
-cnoremap <C-S-Tab> <C-C><C-W>W
+"""
+""" " In insert mode: If cursor on whitespace insert tab, otherwise
+""" " do completion (via ^P)
+""" imap <C-Space>  <c-p>
+""" "imap <C-Space>     <c-r>=InsertTabWrapper()<cr>
+"""
+""" " CTRL-Tab is Next window (works only for gvim)
+""" noremap  <C-Tab> <C-W>w
+""" inoremap <C-Tab> <C-O><C-W>w
+""" cnoremap <C-Tab> <C-C><C-W>w
+""" noremap  <C-S-Tab> <C-W>W
+""" inoremap <C-S-Tab> <C-O><C-W>W
+""" cnoremap <C-S-Tab> <C-C><C-W>W
 
 " Don't use Ex mode, use Q for formatting
 map  Q         gq
@@ -537,6 +537,8 @@ set statusline+=%#warningmsg#
 
 let g:syntastic_error_symbol             =  "✗"
 let g:syntastic_warning_symbol           =  "⚠"
+let g:syntastic_style_error_symbol       =  "↯"
+let g:syntastic_style_warning_symbol     =  "�"
 
 let g:syntastic_always_populate_loc_list =  1
 let g:syntastic_auto_loc_list            =  1
