@@ -2,14 +2,14 @@
 "
 " Python
 "
-" Last change: <Tue, 2015/02/24 12:52:54 arwagner l00slwagner>
+" Last change: <Thu, 2015/10/29 07:51:10 arwagner l00slwagner>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 map <buffer> ,m  :make<cr>
 
-set textwidth=80
-
+# flake8 recommends 79
+set textwidth=79
 
 " Comply to PEP-0008: 4 spaces for indentation, use only spaces
 setlocal smarttab
