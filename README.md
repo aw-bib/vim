@@ -35,7 +35,13 @@ as they are handled by `git` as `submodules`. To populate them use
     git submodule update
 
 which will fetch the current code from the repositories of the projects in
-question
+question.
+
+Run
+
+    git submodule foreach git pull origin master
+
+to update all submodules in one go to head of their respective master.
 
 Also quite a bunch of the smaller scripts are form other authors or include
 contributions form others. Please refer to the scripts to check out their
