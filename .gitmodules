@@ -34,3 +34,6 @@
 [submodule ".vim/bundle/nerdtree-git-plugin"]
 	path = .vim/bundle/nerdtree-git-plugin
 	url = https://github.com/Xuyuanp/nerdtree-git-plugin
+[submodule ".vim/bundle/vim-signify"]
+	path = .vim/bundle/vim-signify
+	url = https://github.com/mhinz/vim-signify.git
