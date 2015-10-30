@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2015/10/29 08:22:25 arwagner l00slwagner>
+" Last change: <Fri, 2015/10/30 08:42:51 arwagner l00slwagner>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -535,16 +535,29 @@ execute pathogen#infect()
 
 set statusline+=%#warningmsg#
 
-let g:syntastic_error_symbol             =  "✗"
-let g:syntastic_warning_symbol           =  "⚠"
+let g:syntastic_error_symbol             =  "✘"
+let g:syntastic_warning_symbol           =  "⌇"
 let g:syntastic_style_error_symbol       =  "↯"
-let g:syntastic_style_warning_symbol     =  "�"
+let g:syntastic_style_warning_symbol     =  "❗"
 
 let g:syntastic_always_populate_loc_list =  1
 let g:syntastic_auto_loc_list            =  1
 let g:syntastic_check_on_open            =  1
 let g:syntastic_check_on_wq              =  0
 let g:syntastic_javascript_checkers = ['jshint']
+
+" NerdTree git indicators
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "⚑",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "=",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✘",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
 
 " syntastic
 let g:tagbar_compact                     =  1
