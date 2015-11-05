@@ -37,3 +37,9 @@
 [submodule ".vim/bundle/vim-signify"]
 	path = .vim/bundle/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
+[submodule ".vim/bundle/vim-monokai"]
+	path = .vim/bundle/vim-monokai
+	url = https://github.com/crusoexia/vim-monokai.git
+[submodule ".vim/bundle/vim-atom-dark"]
+	path = .vim/bundle/vim-atom-dark
+	url = https://github.com/gosukiwi/vim-atom-dark.git
