@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Fri, 2015/10/30 08:42:51 arwagner l00slwagner>
+" Last change: <Thu, 2016/03/24 14:43:19 arwagner l00slwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -114,7 +114,6 @@ set lazyredraw
 set nocompatible             " Use Vim defaults (much better!)
 set ai                       " always set autoindenting on
 set backup                   " keep a backup file
-set viminfo=%,'50,\"100,:100,n~/.viminfo
 set tw=70
 set ruler
 set autowrite
@@ -154,18 +153,18 @@ if (version >= 700)
    " ,? in normal mode is ctrl-x-s
    nnoremap ,?    is
 
-	" :te for tabedit (:te is normally tear-off in w32-gui
+   " :te for tabedit (:te is normally tear-off in w32-gui
    nmap :te    :tabe
 
-	" vim 7 introduces undo branches. Map old undo functions to the new ones
-	nmap u      g-
-	nmap <C-R>  g+
+   " vim 7 introduces undo branches. Map old undo functions to the new ones
+   nmap u      g-
+   nmap <C-R>  g+
 
-	" Highlight the current line by default only in GUI
-	" (consoles get really slow with this...)
-	if has("gui_running")
-		set cursorline
-	endif
+   " Highlight the current line by default only in GUI
+   " (consoles get really slow with this...)
+   if has("gui_running")
+       set cursorline
+   endif
 
 endif
 
@@ -202,7 +201,9 @@ set directory=./.vimswp,$HOME/tmp,/tmp
 " previous position Note: you may have to change ~/.viminfo to
 " point to a directory/file of your choice.  By Dr. Charles
 " Campbell.
-set viminfo='10,\"100,:20,n~/.viminfo
+""" set viminfo='10,\"100,:20,n~/.viminfo
+""" set shada=%,'50,\"100,:100,n~/.nviminfo
+
 au BufReadPost * if line("'\"")|execute("normal `\"")|endif
 
 
@@ -527,7 +528,7 @@ endif
 " enable pathogen to handle external packages we use
 " call it here as this allows to disable some plugins based on the
 " environment (e.g. higher python version required)
-execute pathogen#infect()
+silent! call pathogen#infect()
 
 " syntastic
 "" set statusline+=%{SyntasticStatuslineFlag()}
@@ -536,9 +537,9 @@ execute pathogen#infect()
 set statusline+=%#warningmsg#
 
 let g:syntastic_error_symbol             =  "✘"
-let g:syntastic_warning_symbol           =  "⌇"
+let g:syntastic_warning_symbol           =  "⚑"
 let g:syntastic_style_error_symbol       =  "↯"
-let g:syntastic_style_warning_symbol     =  "❗"
+let g:syntastic_style_warning_symbol     =  "⌇"
 
 let g:syntastic_always_populate_loc_list =  1
 let g:syntastic_auto_loc_list            =  1
@@ -599,9 +600,20 @@ let g:airline_mode_map = {
 " let g:airline_right_sep = '«'
 " let g:airline_right_sep = '◀'
 
-" Use Unite for file and buffer handling
-nnoremap <silent> ,u :Unite buffer file_rec/git file<CR>
+function! Unite_gitprojectroot()
+  " use projectroot#guess() to start recursive file searching wihtin a
+  " git project. Adoped from
+  " https://johnhamelink.com/2014/10/31/making-unite-use-project-root
+  " Consider using file_rec/async instead of file_rec/git to handle
+  " more than git
+  execute ':Unite  -buffer-name=files -start-insert buffer file_rec/git:'.projectroot#guess().'/'
+  endfunction
+
+" non-fancy version without project root:
+" nnoremap <silent> ,u :Unite buffer file_rec/git file<CR>
+nnoremap <silent> ,u :call Unite_gitprojectroot()<cr>
 nnoremap <silent> ,l :Unite line<CR>
+nnoremap <silent> ,g :Unite grep:.<CR>
 call unite#custom#profile('default', 'context', {
 \   'start_insert': 1,
 \   'winheight': 10,
