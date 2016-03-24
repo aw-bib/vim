@@ -2,10 +2,14 @@
 "
 " Markdown
 "
-" Last change: <Wed, 2015/02/18 09:47:24 arwagner l00slwagner>
+" Last change: <Wed, 2016/02/17 08:16:04 arwagner l00slwagner.desy.de>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" usually, markdown are local docs in their own window. Use a
+" different colour scheme to distinguish the windows. This is not
+" possible via modelines :(
+colorscheme monokai
 map <buffer> ,m  :make<cr>
 
 map <buffer> ,mw  :call CallPandoc('mediawiki', 'mediawiki')<cr>
