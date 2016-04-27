@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2016/03/24 14:43:19 arwagner l00slwagner.desy.de>
+" Last change: <Wed, 2016/04/27 15:18:58 arwagner l00slwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -498,7 +498,6 @@ endfunction
 " Smart Backspace: For TeX or HTML it removes e.g. Umlauts...
 " Thx. to Benji Fisher for pointing this out.
 " -------------------------------------------------------------------
-
 fun! SmartBS(pat)
   let init = strpart(getline("."), 0, col(".")-1)
   let len = strlen(matchstr(init, a:pat . "$")) - 1
@@ -515,6 +514,25 @@ fun! InsertTabWrapper()
         return "\<c-p>"
     endif
 endfun
+
+" -------------------------------------------------------------------
+" tablePandoc: Use pandoc to convert tab or | delimited lists to a
+" nicely readable table. Uses pandoc and markdown_github as output
+" format. Select block and :tableMarkdown
+" Minimal adoptoin of
+" http://www.rubenverweij.nl/2016/03/quick-vim-tip-convert-piped-table-to.html
+" -------------------------------------------------------------------
+function! s:tableMarkdown() range
+    exe "'<,'>s/\t/\|/g"
+    exe "'<,'>Tabularize /|"
+    let hsepline= substitute(getline("."),'[^|]','-','g')
+    exe "norm! o" .  hsepline
+    exe "'<,'>s/-|/ |/g"
+    exe "'<,'>s/|-/| /g"
+    exe "'<,'>s/^| \\|\\s*|$\\||//g"
+    exe "'<,'>!pandoc -f markdown -t markdown_github"
+endfunction
+command! -range=% TablePandoc :call <SID>tableMarkdown()
 
 " source the local file once to add potential disable calls for
 " pathogen
@@ -543,7 +561,7 @@ let g:syntastic_style_warning_symbol     =  "⌇"
 
 let g:syntastic_always_populate_loc_list =  1
 let g:syntastic_auto_loc_list            =  1
-let g:syntastic_check_on_open            =  1
+let g:syntastic_check_on_open            =  0
 let g:syntastic_check_on_wq              =  0
 let g:syntastic_javascript_checkers = ['jshint']
 
@@ -626,6 +644,3 @@ call unite#custom#profile('default', 'context', {
 if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
-
-
-
