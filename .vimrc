@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Wed, 2016/04/27 15:18:58 arwagner l00slwagner.desy.de>
+" Last change: <Mon, 2016/05/02 16:40:22 arwagner l00slwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -121,7 +121,9 @@ set cpt=.,b,u
 
 " These chars are utf and should work in general, though they might
 " break in some strange terminals. The default ^I is unreadable.
-set listchars=tab:»·,trail:·,eol:¬
+" Paragraph »·↩…↪¶¬↲↳
+set listchars=tab:»·,trail:·,eol:↩,extends:…,precedes:↪
+set showbreak=↪
 set list
 
 " Get rid of the toolbar in GUI version
