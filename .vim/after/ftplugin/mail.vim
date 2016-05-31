@@ -33,7 +33,7 @@ elseif (($HOSTTYPE=="i386") || ($HOSTTYPE=="alpha") || ($HOSTTYPE=="i386-linux")
    %s/ß/ss/g
 endif
 
-" Map umlauts to there 7bit equivalent 
+" Map umlauts to there 7bit equivalent
 if has("os2")
    imap <buffer> „ ae
    imap <buffer> ” oe
@@ -66,11 +66,11 @@ setlocal nobackup
 setlocal syntax=mail
 "
 "enable autmatic quote folding
-:setlocal foldmethod=expr
-:setlocal foldexpr=strlen(substitute(substitute(getline(v:lnum),'\\s','',\"g\"),'[^>].*','',''))
+setlocal foldmethod=expr
+setlocal foldexpr=strlen(substitute(substitute(getline(v:lnum),'\\s','',\"g\"),'[^>].*','',''))
 "
 " unfold last message quotes, keep older quotes folded
-:setlocal foldlevel=1
+setlocal foldlevel=1
 "
 " Don't use modelines in e-mail messages, avoid trojan horses
 setlocal nomodeline
@@ -78,6 +78,8 @@ setlocal nomodeline
 " Set 'formatoptions' to break text lines,
 " and insert the comment leader ">" when hitting <CR> or using "o".
 setlocal fo+=tcroql
+set linebreak
+set nolist  " ensure that linebreak and breakat are used for display
 
 " Inserting an ellipsis to indicate deleted text
 iab  <buffer> Yell  [...]
@@ -97,7 +99,7 @@ map <buffer> ,fq :1,$s/^> \([-":}\|][ <C-I>]\)/> > /
 "  Fix the quoting of "Microsoft Internet E-Mail":
 "  The guilty mailer identifies like this:
 "  X-Mailer: Microsoft Internet E-Mail/MAPI - 8.0.0.4211
-"  
+"
 "  And this is how it quotes - with a pseudo header:
 "
 "  -----Ursprungliche Nachricht-----
@@ -109,47 +111,46 @@ map <buffer> ,fq :1,$s/^> \([-":}\|][ <C-I>]\)/> > /
 "
 " And here's how I "fix" this quoting:
 " (it makes use of the mappings ",dp" and ",qp"):
-  map <buffer>  #fix /^> -----.*-----$<cr>O<esc>j,dp<c-o>dapVG,qp
+map <buffer>  #fix /^> -----.*-----$<cr>O<esc>j,dp<c-o>dapVG,qp
 
 " Remove eGroups header stuff
-  map <buffer>  #ef /-_->$<cr><esc>o<esc>d{ddx
-  
+map <buffer>  #ef /-_->$<cr><esc>o<esc>d{ddx
+
 "      ,j = join line in commented text
 "           (can be used anywhere on the line)
-  nmap <buffer>  ,j Vjgq
+nmap <buffer>  ,j Vjgq
 "
 "      ,B = break line at current position *and* join the next line
-  nmap <buffer>  ,B r<CR>Vjgq
+nmap <buffer>  ,B r<CR>Vjgq
 "     ,hi = "Hi!"        (indicates first reply)
-  map <buffer>  ,hi 1G}oHi!<CR><ESC>
-  map <buffer>  ,ha 1G}oHallo!<CR><ESC>
+map <buffer>  ,hi 1G}oHi!<CR><ESC>
+map <buffer>  ,ha 1G}oHallo!<CR><ESC>
 "       remove signatures
 "
 "     ,kqs = kill quoted sig (to remove those damn sigs for replies)
 "          goto end-of-buffer, search-backwards for a quoted sigdashes
 "          line, ie "^> -- $", and delete unto end-of-paragraph:
-  map <buffer>  ,kqs G?^> --\_.<CR>d}
+map <buffer>  ,kqs G?^> --\_.<CR>d}
 
 " Quote the whole file
-  map <buffer>  ,q :1<cr><C-v>GI> <esc> 
+map <buffer>  ,q :1<cr><C-v>GI> <esc>
 
 " Decyrpt a selected block
-  vmap <buffer> ,D :s/^[> ]*//g<cr>gv:!gpg<cr><cr>
-
-  map  <buffer> ,E :call GPGencrypt()<cr>
-
+vmap <buffer> ,D :s/^[> ]*//g<cr>gv:!gpg<cr><cr>
+map  <buffer> ,E :call GPGencrypt()<cr>
 function! GPGencrypt ()
-
   let from=substitute(getline(1), "^From: ","", "")
   let from=substitute(from, "^[\"A-Za-z0-9@ ]*<", "", "")
   let from=substitute(from, ">.*", "", "")
   let rcpt=substitute(getline(2), "^To: ","", "")
   let rcpt=substitute(rcpt, "^[\"A-Za-z0-9@ ]*<", "", "")
   let rcpt=substitute(rcpt, ">.*", "", "")
-  exec "9,$! gpg -ea --always-trust -r \"" . from . "\" -r \"" . rcpt . "\"" 
+  exec "9,$! gpg -ea --always-trust -r \"" . from . "\" -r \"" . rcpt . "\""
   redraw!
-
 endfunction
 
-
 syn region mailComment start="-=" end="\n"
+
+" enable spell checker for English and German
+set spelllang=en,de
+set spell

@@ -2,7 +2,7 @@
 "
 " Python
 "
-" Last change: <Thu, 2015/10/29 08:50:26 arwagner l00slwagner>
+" Last change: <Mon, 2016/05/02 14:07:31 arwagner l00slwagner.desy.de>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -20,4 +20,4 @@ setlocal expandtab
 setlocal autoindent
 
 " highlight lines longer than 80 chars
-:match Folded '\%>80v.\+'
+""" :match Folded '\%>80v.\+'

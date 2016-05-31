@@ -38,7 +38,7 @@ endif
 "   ,ps = create ps and view it 
 "
 map <buffer> ,rl :wall<cr>:make <CR>
-map <buffer> ,m  ,rl
+map <buffer> ,m  mz,rl<cr>
 map <buffer> ,rt :wall<cr>:!tex % <CR><CR>
 
 " Now actual compilers get called, so one has to care about hte
@@ -193,30 +193,30 @@ endif
 inoreabbr <buffer> \cd    \cdot
 inoreabbr <buffer> \cds   \cdots
 
-inoremap <buffer> \bei   \begin{itemize}o\end{itemize}O  \item
+inoremap <buffer> \bei   \begin{itemize}o\end{itemize}O<tab>\item 
 inoremap <buffer> \beq   \begin{equation}o\end{equation}O
 inoremap <buffer> \bea   \begin{eqnarray}o\end{eqnarray}O
-iabbr  <buffer> \it    \item
-iabbr  <buffer> \hs    \hspace{<C-O>:call getchar()<CR>
-iabbr  <buffer> \vs    \vspace{<C-O>:call getchar()<CR>
-iabbr  <buffer> \pt    \partial
-iabbr  <buffer> \ol    \overline{<C-O>:call getchar()<CR>
-iabbr  <buffer> \ul    \underline{<C-O>:call getchar()<CR>
-iabbr  <buffer> \un    \underbrace{<C-O>:call getchar()<CR>
-iabbr  <buffer> \ch    \chapter{<C-O>:call getchar()<CR>
-iabbr  <buffer> \se    \section{<C-O>:call getchar()<CR>
-iabbr  <buffer> \su    \subsection{<C-O>:call getchar()<CR>
-iabbr  <buffer> \ss    \subsubsection{<C-O>:call getchar()<CR>
-iabbr  <buffer> \par   \paragraph{<C-O>:call getchar()<CR>
-iabbr  <buffer> \hb    \hbar
-iabbr  <buffer> \ov    \over
-iabbr  <buffer> \ci    \cite{<C-O>:call getchar()<CR>
-iabbr  <buffer> \Ria   \Rightarrow
-iabbr  <buffer> \ria   \rightarrow
-iabbr  <buffer> \tab   \tabular
-iabbr  <buffer>  \emi      \emindex{<C-O>:call getchar()<CR>
-iabbr  <buffer>  \nfi      \nfindex{<C-O>:call getchar()<CR>
-iabbr  <buffer>  \bfi      \bfindex{<C-O>:call getchar()<CR>
+iabbr  <buffer> \it      \item
+iabbr  <buffer> \hs      \hspace{<C-O>:call getchar()<CR>
+iabbr  <buffer> \vs      \vspace{<C-O>:call getchar()<CR>
+iabbr  <buffer> \pt      \partial
+iabbr  <buffer> \ol      \overline{<C-O>:call getchar()<CR>
+iabbr  <buffer> \ul      \underline{<C-O>:call getchar()<CR>
+iabbr  <buffer> \un      \underbrace{<C-O>:call getchar()<CR>
+iabbr  <buffer> \ch      \chapter{<C-O>:call getchar()<CR>
+iabbr  <buffer> \se      \section{<C-O>:call getchar()<CR>
+iabbr  <buffer> \su      \subsection{<C-O>:call getchar()<CR>
+iabbr  <buffer> \ss      \subsubsection{<C-O>:call getchar()<CR>
+iabbr  <buffer> \par     \paragraph{<C-O>:call getchar()<CR>
+iabbr  <buffer> \hb      \hbar
+iabbr  <buffer> \ov      \over
+iabbr  <buffer> \ci      \cite{<C-O>:call getchar()<CR>
+iabbr  <buffer> \Ria     \Rightarrow
+iabbr  <buffer> \ria     \rightarrow
+iabbr  <buffer> \tab     \tabular
+iabbr  <buffer> \emi     \emindex{<C-O>:call getchar()<CR>
+iabbr  <buffer> \nfi     \nfindex{<C-O>:call getchar()<CR>
+iabbr  <buffer> \bfi     \bfindex{<C-O>:call getchar()<CR>
 
 imap <buffer> " <C-R>=TexQuotes()<CR>
 inoreabbr <buffer> \v     \vec{}i
@@ -262,7 +262,7 @@ inoremap <buffer> 'f \varphi
 inoremap <buffer> 'g \gamma
 inoremap <buffer> 'h \eta
 inoremap <buffer> 'i \infty
-	    " Or \iota or \infty or \in
+" Or \iota or \infty or \in
 inoremap <buffer> 'k \kappa
 inoremap <buffer> 'l \lambda
 inoremap <buffer> 'm \mu

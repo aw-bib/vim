@@ -2,7 +2,7 @@
 "
 " Markdown
 "
-" Last change: <Wed, 2016/02/17 08:16:04 arwagner l00slwagner.desy.de>
+" Last change: <Tue, 2016/05/03 11:14:13 arwagner l00slwagner.desy.de>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -19,6 +19,13 @@ map <buffer> ,md  :call CallPandoc('docx', 'docx')<cr>
 " map <buffer> ,tw  :call MakeTwiki<cr>
 
 set textwidth=80
+
+set formatoptions-=t
+set linebreak
+set nolist  " ensure that linebreak and breakat are used for display
+command! -range=% SoftWrap
+            \ <line2>put _ |
+            \ <line1>,<line2>g/.\+/ .;-/^$/ join |normal $x
 
 " Like python, markdown likes 4 space indents
 setlocal smarttab
@@ -37,4 +44,6 @@ fun! CallPandoc(format, extension)
     execute "!" . pandoc
 endfun
 
-
+" enable spell checker for English and German
+set spelllang=en,de
+set spell
