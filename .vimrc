@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Mon, 2016/05/02 16:40:22 arwagner l00slwagner.desy.de>
+" Last change: <Wed, 2016/07/13 12:40:56 arwagner l00slwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -132,6 +132,9 @@ set guioptions+=c
 set guioptions=aegimrLtc
 set guioptions=aegirLtc
 
+" Always use vertical diff
+set diffopt+=vertical
+
 " by default use ,<anything> for maps
 let mapleader = ","
 let maplocalleader = ","
@@ -180,7 +183,6 @@ endif
 
 if (version < 702)
     call add(g:pathogen_disabled, 'tagbar')
-    call add(g:pathogen_disabled, 'nerdtree')
 endif
 
 if (version < 703)
@@ -405,7 +407,6 @@ map  <F1>      <ESC>
 " Save
 map  <F2>      <ESC>wq
 " Load file
-nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " Toggle tagbar
 nnoremap <silent> <F5> :TagbarToggle<CR>
 nnoremap <silent> <F6> :GundoToggle<CR>
@@ -566,22 +567,16 @@ let g:syntastic_auto_loc_list            =  1
 let g:syntastic_check_on_open            =  0
 let g:syntastic_check_on_wq              =  0
 let g:syntastic_javascript_checkers = ['jshint']
-
-" NerdTree git indicators
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "⚑",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "=",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✘",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
-
-" syntastic
 let g:tagbar_compact                     =  1
+
+" adopt hight to match the number of errors This avoids a empty space
+" in case of only one or two messages.
+" cf. https://github.com/scrooloose/syntastic/issues/1678
+function! SyntasticCheckHook(errors)
+    if !empty(a:errors)
+        let g:syntastic_loc_list_height = min([len(a:errors), 10])
+    endif
+endfunction
 
 " Setup solarized colour scheme with light background and high
 " contrast diff mode (giving green/red blocks rather than text)
