@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Wed, 2016/07/13 12:40:56 arwagner l00slwagner.desy.de>
+" Last change: <Tue, 2016/07/19 15:39:33 arwagner bib-pubdb2>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -389,11 +389,6 @@ if has('gui_running')
       set guifont=Courier:h14
    endif
    set background=light
-else
-   set t_Co=16
-   " seems to be inverted on xfce-term?
-   " need xfce-term to load solarized light defaults
-   set background=light
 endif
 
 " Switch to UTF-8
@@ -580,8 +575,23 @@ endfunction
 
 " Setup solarized colour scheme with light background and high
 " contrast diff mode (giving green/red blocks rather than text)
-set background=light
-colorscheme solarized
+if has('gui_running')
+    set background=light
+    colorscheme solarized
+else
+    " Use default colours. If XFCE e.g. loads a proper style this
+    " results in decent colouring within the terminal.
+    """ set t_Co=16
+    """ color default
+    " seems to be inverted on xfce-term?
+    " need xfce-term to load solarized light defaults
+    " set background=light
+    set t_Co=256
+    set background=dark
+    colorscheme default
+endif
+
+
 let g:solarized_diffmode="high"
 
 " Customize airline statusbar
