@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2016/07/19 15:39:33 arwagner bib-pubdb2>
+" Last change: <Thu, 2016/07/28 16:30:48 arwagner bib-pubdb2>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -586,11 +586,11 @@ else
     " seems to be inverted on xfce-term?
     " need xfce-term to load solarized light defaults
     " set background=light
-    set t_Co=256
+    """ set t_Co=256
+    let g:solarized_termtrans = 1
     set background=dark
-    colorscheme default
+    colorscheme solarized
 endif
-
 
 let g:solarized_diffmode="high"
 
@@ -604,7 +604,11 @@ let g:airline#extensions#whitespace#mixed_indent_format = 'i[%s]'
 let g:airline_powerline_fonts=0
 " sol is more readable and gives a cleaner spilt of the status bar,
 " then the default solarized, especially in the middle sections
-let g:airline_theme="sol"
+if has('gui_running')
+    let g:airline_theme="sol"
+else
+    let g:airline_theme="base16"
+endif
 " shorten mode indicators
 let g:airline_mode_map = {
       \ '__' : '-',
