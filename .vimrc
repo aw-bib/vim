@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2016/07/28 16:30:48 arwagner bib-pubdb2>
+" Last change: <Tue, 2017/04/18 09:51:33 arwagner l00slwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -89,6 +89,9 @@ set suffixes=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.ilg,.bbl,.toc,.ind,.axp
 " Give a visible choice:
 set wildmenu
 set wildignore=.o,.exe,.dll,.so,.*~
+
+" Enable :find to dive in to subdirs
+set path+=**
 
 " startofline:  no:  do not jump to first character with page
 " commands, ie keep the cursor in the current column.
@@ -297,6 +300,14 @@ augroup mud
   autocmd BufRead     *.mg                    set filetype=text
   autocmd BufNewFile  *.mg                    set filetype=text
 augroup END
+
+augroup quickfix
+    " handle quickfix and location list windows
+    autocmd FileType qf setlocal nowrap
+    " jump to the current line by <Enter>
+    autocmd FileType qf nmap <buffer> <Enter>  :.cc<cr>
+    autocmd FileType qf set nobuflisted
+augroup end
 
 " omnicomplete from syntax files on by default
 " but also respect available more fancy omnicomlete functions
@@ -649,6 +660,20 @@ call unite#custom#profile('default', 'context', {
 \   'direction': 'botright',
 \   'prompt': '> ',
 \ })
+
+
+" allow .. to go up one level in a fugtive tree buffer
+" from vimcasts #34
+autocmd User fugitive
+  \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+  \   nnoremap <buffer> .. :edit %:h<CR> |
+  \ endif
+
+" Autoclean fugitive buffers
+autocmd BufReadPost fugitive://* set bufhidden=delete
+
+" Explore the history of the current file
+abbr Ghistory  :Glog -- %<cr>:copen<cr>
 
 " Load local changes to the above to adopt to user specific local
 " needs
