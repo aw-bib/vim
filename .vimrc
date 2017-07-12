@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2017/04/18 09:51:33 arwagner l00slwagner.desy.de>
+" Last change: <Wed, 2017/07/12 22:17:36 arwagner agamemnon>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -121,6 +121,9 @@ set tw=70
 set ruler
 set autowrite
 set cpt=.,b,u
+
+" Set this before using utf-8 listchars (req. for vim 8)
+set encoding=utf-8
 
 " These chars are utf and should work in general, though they might
 " break in some strange terminals. The default ^I is unreadable.
@@ -402,9 +405,6 @@ if has('gui_running')
    set background=light
 endif
 
-" Switch to UTF-8
-nmap ,U        :set encoding=utf-8<cr>
-set encoding=utf-8
 
 " F1 != Help (ThinkPad!!!)
 map! <F1>      <ESC>
