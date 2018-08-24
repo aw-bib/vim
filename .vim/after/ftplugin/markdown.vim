@@ -2,9 +2,11 @@
 "
 " Markdown
 "
-" Last change: <Tue, 2016/05/03 11:14:13 arwagner l00slwagner.desy.de>
+" Last change: <Wed, 2018/02/21 14:52:27 arwagner l00slwagner.desy.de>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Save the bit order marker for utf-8 encoding
+set bomb
 
 " usually, markdown are local docs in their own window. Use a
 " different colour scheme to distinguish the windows. This is not
