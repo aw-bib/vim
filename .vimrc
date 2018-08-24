@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Wed, 2017/07/12 22:17:36 arwagner agamemnon>
+" Last change: <Fri, 2018/08/24 14:27:32 arwagner l00slwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -598,9 +598,16 @@ else
     " need xfce-term to load solarized light defaults
     " set background=light
     """ set t_Co=256
-    let g:solarized_termtrans = 1
-    set background=dark
-    colorscheme solarized
+    if $USER == 'arwagner'
+        " This user usually uses a solarized light xterm.
+        " (or xfce-term to load solarized light defaults)
+        let g:solarized_termtrans = 1
+        set background=dark
+        colorscheme solarized
+    else
+        set t_Co=16
+        colorscheme default
+    endif
 endif
 
 let g:solarized_diffmode="high"
@@ -620,6 +627,10 @@ if has('gui_running')
 else
     let g:airline_theme="base16"
 endif
+
+" No terminal :(
+" let g:airline_theme="papercolor"
+
 " shorten mode indicators
 let g:airline_mode_map = {
       \ '__' : '-',
