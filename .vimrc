@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Fri, 2018/08/24 14:27:32 arwagner l00slwagner.desy.de>
+" Last change: <Tue, 2018/08/28 15:39:05 arwagner l00slwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -395,16 +395,6 @@ nmap ,ce       :color evening<cr>
 nmap ,cm       :color morning<cr>
 nmap ,ct       :color xterm16<cr>
 
-if has('gui_running')
-   if has('win32')
-      set guifont=Courier_New:h11:cANSI
-   endif
-   if has('gui_macvim')
-      set guifont=Courier:h14
-   endif
-   set background=light
-endif
-
 
 " F1 != Help (ThinkPad!!!)
 map! <F1>      <ESC>
@@ -556,6 +546,7 @@ endif
 " call it here as this allows to disable some plugins based on the
 " environment (e.g. higher python version required)
 silent! call pathogen#infect()
+call pathogen#helptags()
 
 " syntastic
 "" set statusline+=%{SyntasticStatuslineFlag()}
@@ -685,6 +676,27 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " Explore the history of the current file
 abbr Ghistory  :Glog -- %<cr>:copen<cr>
+
+if has('gui_running')
+   " guifont for coding
+   let font = {"name" : "Hack", "size" : "11"}
+
+   " check if font exist and set it only if it is available
+   call system("fc-list -q " . font.name)
+   if has("unix") && !v:shell_error
+       let g:airline_powerline_fonts=1
+       let &guifont=join(values(font))
+   end
+
+   if has('win32')
+      set guifont=Courier_New:h11:cANSI
+   endif
+   if has('gui_macvim')
+      set guifont=Courier:h14
+   endif
+   set background=light
+endif
+
 
 " Load local changes to the above to adopt to user specific local
 " needs
