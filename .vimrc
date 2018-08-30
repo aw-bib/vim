@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2018/08/28 15:39:05 arwagner l00slwagner.desy.de>
+" Last change: <Thu, 2018/08/30 08:56:46 arwagner l00slwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -554,14 +554,17 @@ call pathogen#helptags()
 
 set statusline+=%#warningmsg#
 
-let g:syntastic_error_symbol             =  "✘"
-let g:syntastic_warning_symbol           =  "⚑"
-let g:syntastic_style_error_symbol       =  "↯"
-let g:syntastic_style_warning_symbol     =  "⌇"
+""let g:syntastic_error_symbol             =  " ✘"
+""let g:syntastic_warning_symbol           =  " ⚑"
+
+let g:syntastic_error_symbol             =  "↯"
+let g:syntastic_warning_symbol           =  "?!"
+let g:syntastic_style_error_symbol       =  "->"
+let g:syntastic_style_warning_symbol     =  "≈≈"
 
 let g:syntastic_always_populate_loc_list =  1
 let g:syntastic_auto_loc_list            =  1
-let g:syntastic_check_on_open            =  0
+let g:syntastic_check_on_open            =  1
 let g:syntastic_check_on_wq              =  0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:tagbar_compact                     =  1
@@ -571,7 +574,7 @@ let g:tagbar_compact                     =  1
 " cf. https://github.com/scrooloose/syntastic/issues/1678
 function! SyntasticCheckHook(errors)
     if !empty(a:errors)
-        let g:syntastic_loc_list_height = min([len(a:errors), 10])
+        let g:syntastic_loc_list_height = min([len(a:errors), 5])
     endif
 endfunction
 
@@ -610,13 +613,21 @@ let g:airline#extensions#syntastic#enabled = 0
 let g:airline#extensions#branch#displayed_head_limit = 10
 let g:airline#extensions#whitespace#trailing_format = 't[%s]'
 let g:airline#extensions#whitespace#mixed_indent_format = 'i[%s]'
-let g:airline_powerline_fonts=0
+" Global powerline requires to use the terminal to use some poper font
+let g:airline_powerline_fonts=1
 " sol is more readable and gives a cleaner spilt of the status bar,
 " then the default solarized, especially in the middle sections
 if has('gui_running')
-    let g:airline_theme="sol"
+    " let g:airline_theme="sol"
+    let g:airline_theme="papercolor"
 else
     let g:airline_theme="base16"
+    " let g:airline_powerline_fonts=0
+    let g:airline_symbols_ascii = 1
+    " let g:airline_left_sep = '»'
+    " let g:airline_left_sep = '▶'
+    " let g:airline_right_sep = '«'
+    " let g:airline_right_sep = '◀'
 endif
 
 " No terminal :(
@@ -636,11 +647,6 @@ let g:airline_mode_map = {
       \ 'S'  : 'S',
       \ '' : 'S',
       \ }
-
-" let g:airline_left_sep = '»'
-" let g:airline_left_sep = '▶'
-" let g:airline_right_sep = '«'
-" let g:airline_right_sep = '◀'
 
 function! Unite_gitprojectroot()
   " use projectroot#guess() to start recursive file searching wihtin a
@@ -680,6 +686,7 @@ abbr Ghistory  :Glog -- %<cr>:copen<cr>
 if has('gui_running')
    " guifont for coding
    let font = {"name" : "Hack", "size" : "11"}
+   let font = {"name" : "Hack Nerd Font", "size" : "10.5"}
 
    " check if font exist and set it only if it is available
    call system("fc-list -q " . font.name)
