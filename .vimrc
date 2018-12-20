@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2018/08/30 08:56:46 arwagner l00slwagner.desy.de>
+" Last change: <Thu, 2018/12/20 15:09:25 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -309,6 +309,7 @@ augroup quickfix
     autocmd FileType qf setlocal nowrap
     " jump to the current line by <Enter>
     autocmd FileType qf nmap <buffer> <Enter>  :.cc<cr>
+    autocmd FileType qf nmap <buffer> <Enter>  :.ll<cr>
     autocmd FileType qf set nobuflisted
 augroup end
 
@@ -384,6 +385,10 @@ nmap <S-TAB>   :bp<CR>
 """ noremap  <C-S-Tab> <C-W>W
 """ inoremap <C-S-Tab> <C-O><C-W>W
 """ cnoremap <C-S-Tab> <C-C><C-W>W
+
+" Ctrl-C does esc, but doesn't check abbrevieations, C-[ does so remap
+" Ctrl-C to real Esc.
+inoremap <C-C> <Esc><Esc>
 
 " Don't use Ex mode, use Q for formatting
 map  Q         gq
@@ -557,14 +562,14 @@ set statusline+=%#warningmsg#
 ""let g:syntastic_error_symbol             =  " ✘"
 ""let g:syntastic_warning_symbol           =  " ⚑"
 
-let g:syntastic_error_symbol             =  "↯"
+let g:syntastic_error_symbol             =  "↯↯"
 let g:syntastic_warning_symbol           =  "?!"
 let g:syntastic_style_error_symbol       =  "->"
 let g:syntastic_style_warning_symbol     =  "≈≈"
 
 let g:syntastic_always_populate_loc_list =  1
 let g:syntastic_auto_loc_list            =  1
-let g:syntastic_check_on_open            =  1
+let g:syntastic_check_on_open            =  0
 let g:syntastic_check_on_wq              =  0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:tagbar_compact                     =  1
@@ -669,6 +674,11 @@ call unite#custom#profile('default', 'context', {
 \   'prompt': '> ',
 \ })
 
+if executable('ag')
+    let g:unite_source_grep_command="ag"
+    let g:unite_source_grep_default_opts="-i --nocolor --nogroup"
+    set grepprg=ag\ --nogroup\ --nocolor
+endif
 
 " allow .. to go up one level in a fugtive tree buffer
 " from vimcasts #34
