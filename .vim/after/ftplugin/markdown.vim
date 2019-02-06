@@ -2,7 +2,7 @@
 "
 " Markdown
 "
-" Last change: <Wed, 2018/02/21 14:52:27 arwagner l00slwagner.desy.de>
+" Last change: <Mon, 2019/02/04 16:43:54 arwagner l00lnxwagner.desy.de>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Save the bit order marker for utf-8 encoding
@@ -22,7 +22,7 @@ map <buffer> ,md  :call CallPandoc('docx', 'docx')<cr>
 
 set textwidth=80
 
-set formatoptions-=t
+" set formatoptions-=t
 set linebreak
 set nolist  " ensure that linebreak and breakat are used for display
 command! -range=% SoftWrap
