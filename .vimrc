@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2018/12/20 15:09:25 arwagner l00lnxwagner.desy.de>
+" Last change: <Wed, 2019/02/06 12:16:54 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -122,8 +122,9 @@ set ruler
 set autowrite
 set cpt=.,b,u
 
-" Set this before using utf-8 listchars (req. for vim 8)
-set encoding=utf-8
+" Do not set encoding anymore to display file encoding properly and
+" prevent vim from recoding on the fly.
+"-" set encoding=utf-8
 
 " These chars are utf and should work in general, though they might
 " break in some strange terminals. The default ^I is unreadable.
@@ -372,19 +373,6 @@ vmap * "yy:let @/='\(' . @y . '\)'<cr>
 " In normal mode: TAB and Shift-TAB to change buffers
 nmap <TAB>     :bn<CR>
 nmap <S-TAB>   :bp<CR>
-"""
-""" " In insert mode: If cursor on whitespace insert tab, otherwise
-""" " do completion (via ^P)
-""" imap <C-Space>  <c-p>
-""" "imap <C-Space>     <c-r>=InsertTabWrapper()<cr>
-"""
-""" " CTRL-Tab is Next window (works only for gvim)
-""" noremap  <C-Tab> <C-W>w
-""" inoremap <C-Tab> <C-O><C-W>w
-""" cnoremap <C-Tab> <C-C><C-W>w
-""" noremap  <C-S-Tab> <C-W>W
-""" inoremap <C-S-Tab> <C-O><C-W>W
-""" cnoremap <C-S-Tab> <C-C><C-W>W
 
 " Ctrl-C does esc, but doesn't check abbrevieations, C-[ does so remap
 " Ctrl-C to real Esc.
@@ -459,7 +447,6 @@ iab Ytime <C-R>=strftime("%H:%M")<CR>
 " man strftime:     %X      locale's appropriate time representation
 " Example: 04.09.00 - 09:53
 iab YDT           <C-R>=strftime("%d.%m.%y - %H:%M")<CR>
-"
 iab YDATE <C-R>=strftime("%a %b %d %T %Z %Y")<CR>
 
 " insert the current filename *with* path:
@@ -476,15 +463,7 @@ iab YPATH <C-R>=expand("%:h")<cr>
 let g:timstamp_1='\(Last update:)'
 let g:timstamp_2='\(Last \?\(changed\?\|modified\):\).*$!\1 <%a, %Y/%m/%d %H:%M:%S #u #h>'
 let g:timstamp_automask='*'
-" let g:timstamp_hostname
-" let g:timstamp_Hostname
-" let g:timstamp_ignorecase
-" let g:timstamp_language
 let g:timstamp_modelines=40
-" let g:timstamp_userid
-" let g:timstamp_username
-"
-"
 
 " -------------------------------------------------------------------
 " double brackets...
@@ -554,14 +533,6 @@ silent! call pathogen#infect()
 call pathogen#helptags()
 
 " syntastic
-"" set statusline+=%{SyntasticStatuslineFlag()}
-"" set statusline+=%*
-
-set statusline+=%#warningmsg#
-
-""let g:syntastic_error_symbol             =  " ✘"
-""let g:syntastic_warning_symbol           =  " ⚑"
-
 let g:syntastic_error_symbol             =  "↯↯"
 let g:syntastic_warning_symbol           =  "?!"
 let g:syntastic_style_error_symbol       =  "->"
@@ -573,6 +544,9 @@ let g:syntastic_check_on_open            =  0
 let g:syntastic_check_on_wq              =  0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:tagbar_compact                     =  1
+
+" shorten syntastic statusline output using marker symbols
+let g:syntastic_stl_format = "[%E{↯↯%fe #%e}%B{, }%W{?! %fw #%w}]"
 
 " adopt hight to match the number of errors This avoids a empty space
 " in case of only one or two messages.
@@ -589,14 +563,6 @@ if has('gui_running')
     set background=light
     colorscheme solarized
 else
-    " Use default colours. If XFCE e.g. loads a proper style this
-    " results in decent colouring within the terminal.
-    """ set t_Co=16
-    """ color default
-    " seems to be inverted on xfce-term?
-    " need xfce-term to load solarized light defaults
-    " set background=light
-    """ set t_Co=256
     if $USER == 'arwagner'
         " This user usually uses a solarized light xterm.
         " (or xfce-term to load solarized light defaults)
@@ -611,47 +577,6 @@ endif
 
 let g:solarized_diffmode="high"
 
-" Customize airline statusbar
-" Disable syntastics integratio to save space
-let g:airline#extensions#syntastic#enabled = 0
-" shorten long branch names to 10 chars
-let g:airline#extensions#branch#displayed_head_limit = 10
-let g:airline#extensions#whitespace#trailing_format = 't[%s]'
-let g:airline#extensions#whitespace#mixed_indent_format = 'i[%s]'
-" Global powerline requires to use the terminal to use some poper font
-let g:airline_powerline_fonts=1
-" sol is more readable and gives a cleaner spilt of the status bar,
-" then the default solarized, especially in the middle sections
-if has('gui_running')
-    " let g:airline_theme="sol"
-    let g:airline_theme="papercolor"
-else
-    let g:airline_theme="base16"
-    " let g:airline_powerline_fonts=0
-    let g:airline_symbols_ascii = 1
-    " let g:airline_left_sep = '»'
-    " let g:airline_left_sep = '▶'
-    " let g:airline_right_sep = '«'
-    " let g:airline_right_sep = '◀'
-endif
-
-" No terminal :(
-" let g:airline_theme="papercolor"
-
-" shorten mode indicators
-let g:airline_mode_map = {
-      \ '__' : '-',
-      \ 'n'  : 'N',
-      \ 'i'  : 'I',
-      \ 'R'  : 'R',
-      \ 'c'  : 'C',
-      \ 'v'  : 'V',
-      \ 'V'  : 'V',
-      \ '' : 'V',
-      \ 's'  : 'S',
-      \ 'S'  : 'S',
-      \ '' : 'S',
-      \ }
 
 function! Unite_gitprojectroot()
   " use projectroot#guess() to start recursive file searching wihtin a
@@ -674,6 +599,7 @@ call unite#custom#profile('default', 'context', {
 \   'prompt': '> ',
 \ })
 
+" Enable silver searcher for unite if it is available
 if executable('ag')
     let g:unite_source_grep_command="ag"
     let g:unite_source_grep_default_opts="-i --nocolor --nogroup"
@@ -693,30 +619,108 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Explore the history of the current file
 abbr Ghistory  :Glog -- %<cr>:copen<cr>
 
+" Customize airline statusbar
+" Disable syntastics integration to save space
+let g:airline#extensions#syntastic#enabled = 0
+" shorten long branch names to 10 chars
+let g:airline#extensions#branch#displayed_head_limit = 10
+let g:airline#extensions#whitespace#trailing_format = 't[%s]'
+let g:airline#extensions#whitespace#mixed_indent_format = 'i[%s]'
+" Global powerline requires to use the terminal to use some poper font
+let g:airline_powerline_fonts=1
+
+" shorten mode indicators
+let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n'  : 'N',
+      \ 'i'  : 'I',
+      \ 'R'  : 'R',
+      \ 'c'  : 'C',
+      \ 'v'  : 'V',
+      \ 'V'  : 'V',
+      \ '' : 'V',
+      \ 's'  : 'S',
+      \ 'S'  : 'S',
+      \ '' : 'S',
+      \ }
+
+" Customize lightline.
+" - Drop mode marker as we have a full line for it
+" - Give location as x:y, ie. char and line
+" - Display the git branch, fileformat and encoding
+" - give a bit more information for inactive buffers
+let g:lightline = {
+  \   'colorscheme': 'solarized',
+  \   'active': {
+  \     'left':[ [ 'gitbranch', 'paste' ],
+  \              [ 'readonly', 'filename', 'syntastic' ]
+  \     ]
+  \   },
+  \   'inactive': {
+  \     'left':[ [ 'gitbranch' ],
+  \              [ 'readonly', 'filename' ]
+  \     ]
+  \   },
+  \   'component': {
+  \     'lineinfo': '%2v:%3l',
+  \   },
+  \   'component_function': {
+  \     'gitbranch': 'LightlineFugitive',
+  \     'filename': 'LightlineFilename',
+  \     'fileformat': 'LightlineFileformat',
+  \     'filetype': 'LightlineFiletype',
+  \     'syntastic': 'SyntasticStatuslineFlag',
+  \   }
+  \ }
+
+  function! LightlineFilename()
+    let filename = expand('%:t') !=# '' ? expand('%:t') : 'No Name'
+    let modified = &modified ? ' +' : ''
+    return filename . modified
+  endfunction
+  function! LightlineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+  endfunction
+  function! LightlineFiletype()
+    return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+  endfunction
+  function! LightlineFugitive()
+      if exists('*fugitive#head')
+          let branch = fugitive#head()
+          return branch !=# '' ? '['.branch.']' : ''
+      endif
+      return ''
+  endfunction
+
 if has('gui_running')
    " guifont for coding
-   let font = {"name" : "Hack", "size" : "11"}
    let font = {"name" : "Hack Nerd Font", "size" : "10.5"}
+
+    let g:airline_theme="papercolor"
 
    " check if font exist and set it only if it is available
    call system("fc-list -q " . font.name)
    if has("unix") && !v:shell_error
        let g:airline_powerline_fonts=1
        let &guifont=join(values(font))
-   end
+    endif
 
    if has('win32')
       set guifont=Courier_New:h11:cANSI
    endif
+
    if has('gui_macvim')
       set guifont=Courier:h14
    endif
+
    set background=light
+else
+    let g:airline_theme="base16"
+    let g:airline_symbols_ascii = 1
 endif
 
-
 " Load local changes to the above to adopt to user specific local
-" needs
+" needs. This is the second call
 if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
