@@ -5,6 +5,9 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Allow for html pasting
+setlocal clipboard^=html
+
 " Use tidy as a compiler (here just to check for errors)
 setlocal expandtab
 setlocal makeprg=tidy\ -quiet\ -errors\ --gnu-emacs\ yes\ %
