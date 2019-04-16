@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Wed, 2019/02/06 12:16:54 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2019/04/16 13:33:45 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -517,6 +517,10 @@ function! s:tableMarkdown() range
 endfunction
 command! -range=% TablePandoc :call <SID>tableMarkdown()
 
+" initialize lightline global config: this makes it accessible in
+" .vimrc.local
+let g:lightline = {}
+
 " source the local file once to add potential disable calls for
 " pathogen
 if filereadable(expand("$HOME/.vimrc.local"))
@@ -546,7 +550,7 @@ let g:syntastic_javascript_checkers = ['jshint']
 let g:tagbar_compact                     =  1
 
 " shorten syntastic statusline output using marker symbols
-let g:syntastic_stl_format = "[%E{↯↯%fe #%e}%B{, }%W{?! %fw #%w}]"
+let g:syntastic_stl_format = "[%E{↯ %fe #%e}%B{, }%W{⁈ %fw #%w}]"
 
 " adopt hight to match the number of errors This avoids a empty space
 " in case of only one or two messages.
@@ -619,31 +623,6 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Explore the history of the current file
 abbr Ghistory  :Glog -- %<cr>:copen<cr>
 
-" Customize airline statusbar
-" Disable syntastics integration to save space
-let g:airline#extensions#syntastic#enabled = 0
-" shorten long branch names to 10 chars
-let g:airline#extensions#branch#displayed_head_limit = 10
-let g:airline#extensions#whitespace#trailing_format = 't[%s]'
-let g:airline#extensions#whitespace#mixed_indent_format = 'i[%s]'
-" Global powerline requires to use the terminal to use some poper font
-let g:airline_powerline_fonts=1
-
-" shorten mode indicators
-let g:airline_mode_map = {
-      \ '__' : '-',
-      \ 'n'  : 'N',
-      \ 'i'  : 'I',
-      \ 'R'  : 'R',
-      \ 'c'  : 'C',
-      \ 'v'  : 'V',
-      \ 'V'  : 'V',
-      \ '' : 'V',
-      \ 's'  : 'S',
-      \ 'S'  : 'S',
-      \ '' : 'S',
-      \ }
-
 " Customize lightline.
 " - Drop mode marker as we have a full line for it
 " - Give location as x:y, ie. char and line
@@ -653,7 +632,8 @@ let g:lightline = {
   \   'colorscheme': 'solarized',
   \   'active': {
   \     'left':[ [ 'gitbranch', 'paste' ],
-  \              [ 'readonly', 'filename', 'syntastic' ]
+  \              [ 'readonly', 'filename'],
+  \              [ 'syntastic' ],
   \     ]
   \   },
   \   'inactive': {
@@ -670,7 +650,9 @@ let g:lightline = {
   \     'fileformat': 'LightlineFileformat',
   \     'filetype': 'LightlineFiletype',
   \     'syntastic': 'SyntasticStatuslineFlag',
-  \   }
+  \   },
+  \   'separator': { 'left': '', 'right': '' },
+  \   'subseparator': { 'left': '', 'right': '' }
   \ }
 
   function! LightlineFilename()
@@ -687,7 +669,11 @@ let g:lightline = {
   function! LightlineFugitive()
       if exists('*fugitive#head')
           let branch = fugitive#head()
-          return branch !=# '' ? '['.branch.']' : ''
+          " shorten branch names to max 10 chars
+          if len(branch) > 10
+             let branch = ''.branch[0:9].'…'
+          endif
+          return branch !=# '' ? branch.':' : ''
       endif
       return ''
   endfunction
@@ -696,12 +682,9 @@ if has('gui_running')
    " guifont for coding
    let font = {"name" : "Hack Nerd Font", "size" : "10.5"}
 
-    let g:airline_theme="papercolor"
-
    " check if font exist and set it only if it is available
    call system("fc-list -q " . font.name)
    if has("unix") && !v:shell_error
-       let g:airline_powerline_fonts=1
        let &guifont=join(values(font))
     endif
 
@@ -715,8 +698,8 @@ if has('gui_running')
 
    set background=light
 else
-    let g:airline_theme="base16"
-    let g:airline_symbols_ascii = 1
+    let g:lightline.separator = {'left': '', 'right': ''}
+    let g:lightline.subseparator = {'left': '|', 'right': '|'}
 endif
 
 " Load local changes to the above to adopt to user specific local
