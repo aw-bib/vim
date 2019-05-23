@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2019/04/16 13:33:45 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2019/05/21 10:32:00 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -148,6 +148,9 @@ let maplocalleader = ","
 
 "      Enable syntax highlighting
 syntax on
+
+" enable mouse in terminal (if terminal supports it)
+set mouse=a
 
 " ----------------------------------------------------------------------
 " Version dependend stuff
