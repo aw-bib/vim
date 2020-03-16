@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2019/05/21 10:32:00 arwagner l00lnxwagner.desy.de>
+" Last change: <Thu, 2020/03/05 10:32:55 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -15,6 +15,7 @@ endif
 if &term == "screen" || &term == "xterm"
   set title
 endif
+
 
 " backspace:  '2' allows backspacing" over
 " indentation, end-of-line, and start-of-line.
@@ -540,7 +541,7 @@ silent! call pathogen#infect()
 call pathogen#helptags()
 
 " syntastic
-let g:syntastic_error_symbol             =  "↯↯"
+let g:syntastic_error_symbol             =  ">>"
 let g:syntastic_warning_symbol           =  "?!"
 let g:syntastic_style_error_symbol       =  "->"
 let g:syntastic_style_warning_symbol     =  "≈≈"
@@ -682,14 +683,25 @@ let g:lightline = {
   endfunction
 
 if has('gui_running')
-   " guifont for coding
-   let font = {"name" : "Hack Nerd Font", "size" : "10.5"}
+   " guifonts for coding
+   " Listed here are a number of nicely readable monospace fonts for
+   " coding. All are `Nerd Fonts` including special chars like
+   " powerline etc.
+   " https://www.nerdfonts.com/
+   "
+   " let font = {"name" : "Hack Nerd Font", "size" : "10.5"}
+   " let font = {"name" : "SauceCodePro Nerd Font", "size" : "10.5"}
+   " let font = {"name" : "RobotoMono Nerd Font", "size" : "10.5"}
+   " let font = {"name" : "OverpassMono Nerd Font", "size" : "10.5"}
+   " let font = {"name" : "mononoki Nerd Font", "size" : "10.5"}
+   let font = {"name" : "BlexMono Nerd Font", "size" : "Medium 10.5"}
 
    " check if font exist and set it only if it is available
-   call system("fc-list -q " . font.name)
+   " Note to quote to handle fonts with spaces.
+   call system("fc-list -q \"" . font.name. "\"")
    if has("unix") && !v:shell_error
-       let &guifont=join(values(font))
-    endif
+        let &guifont=join(values(font))
+   endif
 
    if has('win32')
       set guifont=Courier_New:h11:cANSI
@@ -710,3 +722,6 @@ endif
 if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
+
+" Force italics for comments, like GUI
+highlight Comment cterm=italic
