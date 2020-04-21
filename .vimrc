@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2020/03/05 10:32:55 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2020/04/21 15:58:37 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -316,6 +316,10 @@ augroup quickfix
     autocmd FileType qf nmap <buffer> <Enter>  :.cc<cr>
     autocmd FileType qf nmap <buffer> <Enter>  :.ll<cr>
     autocmd FileType qf set nobuflisted
+    " autocmd FileType qf syntax match ConcealedDetails /\v^[^|]*\|[^|]*\| / conceal
+    autocmd FileType qf syntax match ConcealedDetails /.*[/]/ conceal
+    autocmd FileType qf set conceallevel=2
+    autocmd FileType qf set concealcursor=nvic
 augroup end
 
 " omnicomplete from syntax files on by default
