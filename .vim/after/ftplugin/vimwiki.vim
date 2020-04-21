@@ -2,7 +2,7 @@
 "
 " Markdown
 "
-" Last change: <Mon, 2019/02/04 16:43:54 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2020/04/21 15:06:09 arwagner agamemnon>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Save the bit order marker for utf-8 encoding
@@ -12,13 +12,13 @@ set bomb
 " different colour scheme to distinguish the windows. This is not
 " possible via modelines :(
 colorscheme monokai
-map <buffer> ,m  :make<cr>
-
-map <buffer> ,mw  :call CallPandoc('mediawiki', 'mediawiki')<cr>
-map <buffer> ,mp  :call CallPandoc('pdf', 'pdf')<cr>
-map <buffer> ,mo  :call CallPandoc('odt', 'odt')<cr>
-map <buffer> ,md  :call CallPandoc('docx', 'docx')<cr>
-" map <buffer> ,tw  :call MakeTwiki<cr>
+" map <buffer> ,m  :make<cr>
+" 
+" map <buffer> ,mw  :call CallPandoc('mediawiki', 'mediawiki')<cr>
+" map <buffer> ,mp  :call CallPandoc('pdf', 'pdf')<cr>
+" map <buffer> ,mo  :call CallPandoc('odt', 'odt')<cr>
+" map <buffer> ,md  :call CallPandoc('docx', 'docx')<cr>
+" " map <buffer> ,tw  :call MakeTwiki<cr>
 
 set textwidth=80
 
