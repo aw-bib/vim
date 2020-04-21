@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2020/04/21 15:58:37 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2020/04/21 15:59:32 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -300,8 +300,8 @@ augroup wiki
   autocmd BufRead     wwwzb.fz-juelich.de*    set filetype=mediawiki
   " We hardly ever come across Modula-2, however we have a lot of
   " markdown => prefer Markdown
-  autocmd BufNewFile,BufReadPost *.md         set filetype=markdown
-  autocmd BufNewFile,BufReadPost github.com*  set filetype=markdown
+  " autocmd BufNewFile,BufReadPost *.md         set filetype=markdown
+  " autocmd BufNewFile,BufReadPost github.com*  set filetype=markdown
 augroup END
 
 augroup mud
@@ -663,28 +663,55 @@ let g:lightline = {
   \   'subseparator': { 'left': '', 'right': '' }
   \ }
 
-  function! LightlineFilename()
-    let filename = expand('%:t') !=# '' ? expand('%:t') : 'No Name'
-    let modified = &modified ? ' +' : ''
-    return filename . modified
-  endfunction
-  function! LightlineFileformat()
-    return winwidth(0) > 70 ? &fileformat : ''
-  endfunction
-  function! LightlineFiletype()
-    return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
-  endfunction
-  function! LightlineFugitive()
-      if exists('*fugitive#head')
-          let branch = fugitive#head()
-          " shorten branch names to max 10 chars
-          if len(branch) > 10
-             let branch = ''.branch[0:9].'…'
-          endif
-          return branch !=# '' ? branch.':' : ''
-      endif
-      return ''
-  endfunction
+function! LightlineFilename()
+  let filename = expand('%:t') !=# '' ? expand('%:t') : 'No Name'
+  let modified = &modified ? ' +' : ''
+  return filename . modified
+endfunction
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+function! LightlineFugitive()
+    if exists('*fugitive#head')
+        let branch = fugitive#head()
+        " shorten branch names to max 10 chars
+        if len(branch) > 10
+           let branch = ''.branch[0:9].'…'
+        endif
+        return branch !=# '' ? branch.':' : ''
+    endif
+    return ''
+endfunction
+
+" vimwiki - personalized wikis for vim
+let g:vimwiki_list = [
+    \{'path': "$HOME/vimwiki/work", 'syntax': 'markdown', 'ext': '.md'},
+    \{'path': "$HOME/vimwiki/priv", 'syntax': 'markdown', 'ext': '.md'},
+    \{'path': "$HOME/vimwiki/man",  'syntax': 'markdown', 'ext': '.md'}
+    \]
+command! Diary VimwikiDiaryIndex
+function! ToggleCalendar()
+  execute ":Calendar"
+  if exists("g:calendar_open")
+    if g:calendar_open == 1
+      execute "q"
+      unlet g:calendar_open
+    else
+      g:calendar_open = 1
+    end
+  else
+    let g:calendar_open = 1
+  end
+endfunction
+augroup vimwikigroup
+    autocmd!
+    " automatically update links on read diary
+    autocmd BufRead,BufNewFile diary.md VimwikiDiaryGenerateLinks
+    autocmd FileType vimwiki map c :call ToggleCalendar()<cr>
+augroup end
 
 if has('gui_running')
    " guifonts for coding
