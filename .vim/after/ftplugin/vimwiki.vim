@@ -2,7 +2,7 @@
 "
 " Markdown
 "
-" Last change: <Tue, 2020/04/21 15:06:09 arwagner agamemnon>
+" Last change: <Fri, 2020/04/24 11:21:00 arwagner l00lnxwagner.desy.de>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Save the bit order marker for utf-8 encoding
@@ -11,7 +11,6 @@ set bomb
 " usually, markdown are local docs in their own window. Use a
 " different colour scheme to distinguish the windows. This is not
 " possible via modelines :(
-colorscheme monokai
 " map <buffer> ,m  :make<cr>
 " 
 " map <buffer> ,mw  :call CallPandoc('mediawiki', 'mediawiki')<cr>

@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2020/04/21 15:59:32 arwagner l00lnxwagner.desy.de>
+" Last change: <Thu, 2020/04/23 16:46:23 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -178,6 +178,7 @@ if (version >= 700)
 
    " Highlight the current line by default only in GUI
    " (consoles get really slow with this...)
+   " TODO revisit performance issues seems fixed
    if has("gui_running")
        set cursorline
    endif
@@ -190,10 +191,6 @@ let g:pathogen_disabled = []
 " highlight column after 'textwidth'
 if (version >= 703)
     set colorcolumn=+1
-endif
-
-if (version < 702)
-    call add(g:pathogen_disabled, 'tagbar')
 endif
 
 if (version < 703)
@@ -219,10 +216,9 @@ set directory=./.vimswp,$HOME/tmp,/tmp
 """ set viminfo='10,\"100,:20,n~/.viminfo
 """ set shada=%,'50,\"100,:100,n~/.nviminfo
 
-au BufReadPost * if line("'\"")|execute("normal `\"")|endif
+autocmd BufReadPost * if line("'\"")|execute("normal `\"")|endif
 
-
-" NOTE for autocmd's: vim handle new files not the same like existing
+" NOTE for autocmd's: vim handles new files not the same like existing
 " files, that is, there is A difference between BufRead and
 " BufNewFile!  Empty files are _new_ files.
 " ADDITIONALLY:
@@ -239,9 +235,9 @@ filetype plugin on
 
 augroup mail
 " use vim as editor for (PM)Mail. PMMailfiles are called .BOD
-" also handle mutt and friends as well as other mail clients like
-" Zimbar (mail*)
-  au!
+" also handle mutt and friends as well as other mail clients
+" use `autocmd!` to clear already existing defs from vimrc
+  autocmd!
   autocmd BufRead     mail*                   set filetype=mail
   autocmd BufRead     *.bod,mutt-*,pico*      set filetype=mail
   autocmd BufNewFile  *.bod,mutt-*,pico*      set filetype=mail
@@ -252,7 +248,7 @@ augroup mail
 augroup END
 
 augroup chess
-  au!
+  autocmd!
   autocmd BufRead     *.sor,*.sso             set filetype=scid
   " eng: polyglot's ini-files, using scids syntax is ok here
   autocmd BufRead     *.eng                   set filetype=scid
@@ -261,7 +257,7 @@ augroup END
 " for historic reasons some Maple Text-Files are called mtx
 " Nowadays the canonical name is mpl
 augroup maple
-  au!
+  autocmd!
   autocmd BufRead     *.mtx                   set filetype=maple
   autocmd BufNewFile  *.mtx                   set filetype=maple
   autocmd BufRead     *.map                   set filetype=maple
@@ -269,13 +265,13 @@ augroup maple
 augroup END
 
 augroup mysql
-  au!
+  autocmd!
   autocmd BufRead     *.dump                  set filetype=mysql
   autocmd BufNewFile  *.dump                  set filetype=mysql
 augroup END
 
 augroup MuPAD
-  au!
+  autocmd!
   autocmd BufRead     *.mnb                   set filetype=mupad
   autocmd BufRead     *.mupad                 set filetype=mupad
   autocmd BufNewFile  *.mnb                   set filetype=mupad
@@ -283,6 +279,7 @@ augroup MuPAD
 augroup END
 
 augroup Physics
+  autocmd!
   autocmd BufRead     *.kumac                 set filetype=paw
   autocmd BufRead     *.dta                   set filetype=parameter
   autocmd BufRead     *.scn                   set filetype=parameter
@@ -297,30 +294,56 @@ augroup Physics
 augroup END
 
 augroup wiki
+  autocmd!
   autocmd BufRead     wwwzb.fz-juelich.de*    set filetype=mediawiki
   " We hardly ever come across Modula-2, however we have a lot of
   " markdown => prefer Markdown
-  " autocmd BufNewFile,BufReadPost *.md         set filetype=markdown
-  " autocmd BufNewFile,BufReadPost github.com*  set filetype=markdown
+  autocmd BufNewFile,BufReadPost *.md         set filetype=markdown
+  autocmd BufNewFile,BufReadPost github.com*  set filetype=markdown
 augroup END
 
 augroup mud
+  autocmd!
   autocmd BufRead     *.mg                    set filetype=text
   autocmd BufNewFile  *.mg                    set filetype=text
 augroup END
 
 augroup quickfix
-    " handle quickfix and location list windows
-    autocmd FileType qf setlocal nowrap
-    " jump to the current line by <Enter>
-    autocmd FileType qf nmap <buffer> <Enter>  :.cc<cr>
-    autocmd FileType qf nmap <buffer> <Enter>  :.ll<cr>
-    autocmd FileType qf set nobuflisted
-    " autocmd FileType qf syntax match ConcealedDetails /\v^[^|]*\|[^|]*\| / conceal
-    autocmd FileType qf syntax match ConcealedDetails /.*[/]/ conceal
-    autocmd FileType qf set conceallevel=2
-    autocmd FileType qf set concealcursor=nvic
+  autocmd!
+  " handle quickfix and location list windows
+  autocmd FileType qf setlocal nowrap
+  " jump to the current line by <Enter>
+  autocmd FileType qf nmap <buffer> <Enter>  :.cc<cr>
+  autocmd FileType qf nmap <buffer> <Enter>  :.ll<cr>
+  autocmd FileType qf set nobuflisted
+  " autocmd FileType qf syntax match ConcealedDetails /\v^[^|]*\|[^|]*\| / conceal
+  " autocmd FileType qf syntax match ConcealedDetails /[^/]*[/]/ conceal
+  autocmd FileType qf syntax match ConcealedDetails /\v^[^|]*/ conceal
+  autocmd FileType qf set conceallevel=2
+  autocmd FileType qf set concealcursor=nvic
 augroup end
+
+augroup templates
+  autocmd!
+  autocmd BufNewFile  *.c       0r $HOME/Templates/C.c
+  autocmd BufNewFile  *.h       0r $HOME/Templates/C.h
+  autocmd BufNewFile  *.f       0r $HOME/Templates/Fortran.f
+  autocmd BufNewFile  *.pl      0r $HOME/Templates/Perl.pl
+  autocmd BufNewFile  *.tex     0r $HOME/Templates/latex.tex
+  autocmd BufNewFile  *.mp      0r $HOME/Templates/MuPad.mp
+  autocmd BufNewFile  *.mupad   0r $HOME/Templates/MuPad.mupad
+  autocmd BufNewFile  *.mma     0r $HOME/Templates/math.mma
+  autocmd BufNewFile  *.md      0r $HOME/Templates/markdown.md
+  autocmd BufNewFile  *.py      0r $HOME/Templates/python.py
+
+  autocmd BufNewFile  *.mysql   0r $HOME/Templates/mysql.mysql
+  autocmd BufNewFile  *.sql     0r $HOME/Templates/sql.sql
+  autocmd BufNewFile  *.php     0r $HOME/Templates/php4.php
+
+  autocmd BufNewFile  *.m       set ft=mma   | 0r $HOME/Templates/math.mma
+  autocmd BufNewFile  *.kumac   set ft=paw   | 0r $HOME/Templates/paw.kumac
+  autocmd BufNewFile  *.dump    set ft=mysql | 0r $HOME/Templates/mysql.mysql
+augroup END
 
 " omnicomplete from syntax files on by default
 " but also respect available more fancy omnicomlete functions
@@ -330,27 +353,6 @@ if has("autocmd") && exists("+omnifunc")
       \     setlocal omnifunc=syntaxcomplete#Complete |
       \  endif
 endif
-
-augroup skeletons
-  :autocmd BufNewFile  *.c       0r $HOME/Templates/C.c
-  :autocmd BufNewFile  *.h       0r $HOME/Templates/C.h
-  :autocmd BufNewFile  *.f       0r $HOME/Templates/Fortran.f
-  :autocmd BufNewFile  *.pl      0r $HOME/Templates/Perl.pl
-  :autocmd BufNewFile  *.tex     0r $HOME/Templates/latex.tex
-  :autocmd BufNewFile  *.mp      0r $HOME/Templates/MuPad.mp
-  :autocmd BufNewFile  *.mupad   0r $HOME/Templates/MuPad.mupad
-  :autocmd BufNewFile  *.mma     0r $HOME/Templates/math.mma
-  :autocmd BufNewFile  *.md      0r $HOME/Templates/markdown.md
-  :autocmd BufNewFile  *.py      0r $HOME/Templates/python.py
-
-  :autocmd BufNewFile  *.mysql   0r $HOME/Templates/mysql.mysql
-  :autocmd BufNewFile  *.sql     0r $HOME/Templates/sql.sql
-  :autocmd BufNewFile  *.php     0r $HOME/Templates/php4.php
-
-  :autocmd BufNewFile  *.m       set ft=mma   | 0r $HOME/Templates/math.mma
-  :autocmd BufNewFile  *.kumac   set ft=paw   | 0r $HOME/Templates/paw.kumac
-  :autocmd BufNewFile  *.dump    set ft=mysql | 0r $HOME/Templates/mysql.mysql
-augroup END
 
 " ----------------------------------------------------------------------
 " Mappings on all platfroms
@@ -404,8 +406,6 @@ map  <F1>      <ESC>
 " Save
 map  <F2>      <ESC>wq
 " Load file
-" Toggle tagbar
-nnoremap <silent> <F5> :TagbarToggle<CR>
 nnoremap <silent> <F6> :GundoToggle<CR>
 
 " List buffers
@@ -551,11 +551,11 @@ let g:syntastic_style_error_symbol       =  "->"
 let g:syntastic_style_warning_symbol     =  "≈≈"
 
 let g:syntastic_always_populate_loc_list =  1
-let g:syntastic_auto_loc_list            =  1
+" TODO autoopen seems to confuses lightline(?)
+let g:syntastic_auto_loc_list            =  0
 let g:syntastic_check_on_open            =  0
 let g:syntastic_check_on_wq              =  0
 let g:syntastic_javascript_checkers = ['jshint']
-let g:tagbar_compact                     =  1
 
 " shorten syntastic statusline output using marker symbols
 let g:syntastic_stl_format = "[%E{↯ %fe #%e}%B{, }%W{⁈ %fw #%w}]"
@@ -574,6 +574,33 @@ endfunction
 if has('gui_running')
     set background=light
     colorscheme solarized
+   " guifonts for coding
+   " Listed here are a number of nicely readable monospace fonts for
+   " coding. All are `Nerd Fonts` including special chars like
+   " powerline etc.
+   " https://www.nerdfonts.com/
+   "
+   " let font = {"name" : "Hack Nerd Font", "size" : "10.5"}
+   " let font = {"name" : "SauceCodePro Nerd Font", "size" : "10.5"}
+   " let font = {"name" : "RobotoMono Nerd Font", "size" : "10.5"}
+   " let font = {"name" : "OverpassMono Nerd Font", "size" : "10.5"}
+   " let font = {"name" : "mononoki Nerd Font", "size" : "10.5"}
+   let font = {"name" : "BlexMono Nerd Font", "size" : "Medium 10.5"}
+
+   " check if font exist and set it only if it is available
+   " Note to quote to handle fonts with spaces.
+   call system("fc-list -q \"" . font.name. "\"")
+   if has("unix") && !v:shell_error
+        let &guifont=join(values(font))
+   endif
+
+   if has('win32')
+      set guifont=Courier_New:h11:cANSI
+   endif
+
+   if has('gui_macvim')
+      set guifont=Courier:h14
+   endif
 else
     if $USER == 'arwagner'
         " This user usually uses a solarized light xterm.
@@ -581,6 +608,15 @@ else
         let g:solarized_termtrans = 1
         set background=dark
         colorscheme solarized
+
+        " " For markdown use monokai to distinguish docs from code
+        " " TODO This confuses lightline
+        " augroup colours
+        "     autocmd!
+        "     autocmd BufEnter * colorscheme solarized
+        "     autocmd BufEnter *.md colorscheme monokai
+        "     autocmd BufEnter vimwiki colorscheme monokai
+        " augroup END
     else
         set t_Co=16
         colorscheme default
@@ -588,7 +624,6 @@ else
 endif
 
 let g:solarized_diffmode="high"
-
 
 function! Unite_gitprojectroot()
   " use projectroot#guess() to start recursive file searching wihtin a
@@ -631,11 +666,14 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Explore the history of the current file
 abbr Ghistory  :Glog -- %<cr>:copen<cr>
 
-" Customize lightline.
+" Customize lightline
 " - Drop mode marker as we have a full line for it
 " - Give location as x:y, ie. char and line
 " - Display the git branch, fileformat and encoding
 " - give a bit more information for inactive buffers
+" Note that separators and stuff require a good terminal font,
+" preferably one of the Nerd fonts. Otherwise, reset this to something
+" available via vimrc.local
 let g:lightline = {
   \   'colorscheme': 'solarized',
   \   'active': {
@@ -669,21 +707,26 @@ function! LightlineFilename()
   return filename . modified
 endfunction
 function! LightlineFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
+  if exists("g:loaded_webdevicons")
+      return winwidth(0) > 70 ? (WebDevIconsGetFileFormatSymbol()) : ''
+  else
+      return winwidth(0) > 70 ? &fileformat : ''
+  endif
 endfunction
 function! LightlineFiletype()
-  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+    if exists("g:loaded_webdevicons")
+      return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+    else
+        return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+    endif
 endfunction
 function! LightlineFugitive()
-    if exists('*fugitive#head')
-        let branch = fugitive#head()
-        " shorten branch names to max 10 chars
-        if len(branch) > 10
-           let branch = ''.branch[0:9].'…'
-        endif
-        return branch !=# '' ? branch.':' : ''
+    let branch = fugitive#head()
+    " shorten branch names to max 10 chars
+    if len(branch) > 10
+       let branch = ''.branch[0:9].'…'
     endif
-    return ''
+    return branch !=# '' ? branch.':' : ''
 endfunction
 
 " vimwiki - personalized wikis for vim
@@ -713,40 +756,6 @@ augroup vimwikigroup
     autocmd FileType vimwiki map c :call ToggleCalendar()<cr>
 augroup end
 
-if has('gui_running')
-   " guifonts for coding
-   " Listed here are a number of nicely readable monospace fonts for
-   " coding. All are `Nerd Fonts` including special chars like
-   " powerline etc.
-   " https://www.nerdfonts.com/
-   "
-   " let font = {"name" : "Hack Nerd Font", "size" : "10.5"}
-   " let font = {"name" : "SauceCodePro Nerd Font", "size" : "10.5"}
-   " let font = {"name" : "RobotoMono Nerd Font", "size" : "10.5"}
-   " let font = {"name" : "OverpassMono Nerd Font", "size" : "10.5"}
-   " let font = {"name" : "mononoki Nerd Font", "size" : "10.5"}
-   let font = {"name" : "BlexMono Nerd Font", "size" : "Medium 10.5"}
-
-   " check if font exist and set it only if it is available
-   " Note to quote to handle fonts with spaces.
-   call system("fc-list -q \"" . font.name. "\"")
-   if has("unix") && !v:shell_error
-        let &guifont=join(values(font))
-   endif
-
-   if has('win32')
-      set guifont=Courier_New:h11:cANSI
-   endif
-
-   if has('gui_macvim')
-      set guifont=Courier:h14
-   endif
-
-   set background=light
-else
-    let g:lightline.separator = {'left': '', 'right': ''}
-    let g:lightline.subseparator = {'left': '|', 'right': '|'}
-endif
 
 " Load local changes to the above to adopt to user specific local
 " needs. This is the second call
