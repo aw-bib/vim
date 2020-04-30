@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Thu, 2020/04/23 16:46:23 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2020/04/28 13:18:06 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -730,11 +730,18 @@ function! LightlineFugitive()
 endfunction
 
 " vimwiki - personalized wikis for vim
+let g:vimwiki_listsyms = '✗○◐●✓'"
+let g:vimwiki_hl_headers = 1
+" use usual syntax hightlighting for code blocks marked like github
+let automatic_nested_syntaxes = 1
+" define wikis available, switch with ,ws
+" use symlinks in case they should live on some cloud storage etc.
 let g:vimwiki_list = [
     \{'path': "$HOME/vimwiki/work", 'syntax': 'markdown', 'ext': '.md'},
     \{'path': "$HOME/vimwiki/priv", 'syntax': 'markdown', 'ext': '.md'},
     \{'path': "$HOME/vimwiki/man",  'syntax': 'markdown', 'ext': '.md'}
     \]
+
 command! Diary VimwikiDiaryIndex
 function! ToggleCalendar()
   execute ":Calendar"
