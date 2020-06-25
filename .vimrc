@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2020/04/28 13:18:06 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2020/05/26 11:26:56 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -730,7 +730,7 @@ function! LightlineFugitive()
 endfunction
 
 " vimwiki - personalized wikis for vim
-let g:vimwiki_listsyms = '✗○◐●✓'"
+let g:vimwiki_listsyms = ' ○◐●x'"
 let g:vimwiki_hl_headers = 1
 " use usual syntax hightlighting for code blocks marked like github
 let automatic_nested_syntaxes = 1
