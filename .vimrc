@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2020/05/26 11:26:56 arwagner l00lnxwagner.desy.de>
+" Last change: <Fri, 2020/10/16 12:20:03 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -420,8 +420,6 @@ if argc() == 0
    setlocal buftype=nofile
 endif
 
-" Start a Window-Command by CTRL-W in insert mode
-inoremap <C-W> <C-O><C-W>
 " Make p in Visual mode replace the selected text with the "" register.
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
@@ -429,16 +427,27 @@ vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 nnoremap ,s    :so Session.vim<cr>
 
 " Let :W behave as :w
-  nmap :W :w
+nmap :W :w
 
-" Quick insertion of an empty line:
-"if ("b:modifiable")
-   nmap <CR> o
-"endif
+" insert blank lines with <enter>
+" https://stackoverflow.com/questions/37211250
+function! NewlineWithEnter()
+    if !&modifiable
+      execute "normal! \<CR>"
+    else
+      execute "normal! O\<esc>"
+    endif
+endfunction
+nnoremap <CR> :call NewlineWithEnter()<CR>
 
+" balance braces
 inoremap  ( <C-R>=Double("(",")")<CR>
 inoremap  [ <C-R>=Double("[","]")<CR>
 inoremap  { <C-R>=Double("{","}")<CR>
+
+" also quotes are usually balanced
+inoremap  ' <C-R>=Double("'","'")<CR>
+inoremap  " <C-R>=Double("\"","\"")<CR>
 
 " -------------------------------------------------------------------
 " Abbreviations - General Editing - Inserting Dates and Times
