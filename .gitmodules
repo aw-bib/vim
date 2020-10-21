@@ -55,3 +55,6 @@
 [submodule ".vim/bundle/vim-devicons"]
 	path = .vim/bundle/vim-devicons
 	url = https://github.com/ryanoasis/vim-devicons
+[submodule ".vim/bundle/vim-indent-object"]
+	path = .vim/bundle/vim-indent-object
+	url = http://github.com/michaeljsmith/vim-indent-object
