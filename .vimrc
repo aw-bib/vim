@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Fri, 2020/10/16 12:20:03 arwagner l00lnxwagner.desy.de>
+" Last change: <Wed, 2020/10/21 12:41:45 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -143,9 +143,13 @@ set guioptions=aegirLtc
 " Always use vertical diff
 set diffopt+=vertical
 
-" by default use ,<anything> for maps
-let mapleader = ","
-let maplocalleader = ","
+"" by default use ,<anything> for maps
+""let mapleader = ","
+""let maplocalleader = ","
+" use ä as leader for mappings. This is not used in vim and convenient
+" on German keyboards.
+let mapleader = "ä"
+let maplocalleader = "ä"
 
 "      Enable syntax highlighting
 syntax on
@@ -161,13 +165,13 @@ if (version >= 700)
    set mousemodel=popup_setpos
    " Spell checking
    " - british english:
-   nnoremap ,Se   :setlocal spell spelllang=en_gb<cr>
+   nnoremap <Leader>Se   :setlocal spell spelllang=en_gb<cr>
    " - galelic
-   nnoremap ,Sg   :setlocal spell spelllang=en_gd<cr>
+   nnoremap <Leader>Sg   :setlocal spell spelllang=en_gd<cr>
    " - german
-   nnoremap ,Sd   :setlocal spell spelllang=de<cr>
+   nnoremap <Leader>Sd   :setlocal spell spelllang=de<cr>
    " ,? in normal mode is ctrl-x-s
-   nnoremap ,?    is
+   nnoremap <Leader>?    is
 
    " :te for tabedit (:te is normally tear-off in w32-gui
    nmap :te    :tabe
@@ -359,19 +363,19 @@ endif
 " ----------------------------------------------------------------------
 
 " Resize windows:
-map  ,-        <ESC>:resize -10 <CR>
-map  ,+        <ESC>:resize +10 <CR>
-map  ,_        <ESC>:vertical resize -20 <CR>
-map  ,*        <ESC>:vertical resize +20 <CR>
+map  <Leader>-        <ESC>:resize -10 <CR>
+map  <Leader>+        <ESC>:resize +10 <CR>
+map  <Leader>_        <ESC>:vertical resize -20 <CR>
+map  <Leader>*        <ESC>:vertical resize +20 <CR>
 " set the width of the current window to 76 chars (= normal edition width)
-map  ,7        :vertical resize 76<cr>
+map  <Leader>7        :vertical resize 76<cr>
 " Jump to tag under cursor (otherwise ugly on german keyboards...)
-map  ,,        
+map  <Leader>,        
 " :ptag under cursor
-map  ,.        <C-W>}
+map  <Leader>.        <C-W>}
 
 " Run makeprg
-map  ,m        :make<cr>
+map  <Leader>m        :make<cr>
 
 " In visual mode: TAB and Shift-TAB for indenting
 vmap <TAB>     >
@@ -392,11 +396,11 @@ inoremap <C-C> <Esc><Esc>
 map  Q         gq
 
 " Change colourschemes
-nmap ,ca       :color aw<cr>
-nmap ,cd       :color default<cr>
-nmap ,ce       :color evening<cr>
-nmap ,cm       :color morning<cr>
-nmap ,ct       :color xterm16<cr>
+nmap <Leader>ca       :color aw<cr>
+nmap <Leader>cd       :color default<cr>
+nmap <Leader>ce       :color evening<cr>
+nmap <Leader>cm       :color morning<cr>
+nmap <Leader>ct       :color xterm16<cr>
 
 
 " F1 != Help (ThinkPad!!!)
@@ -414,6 +418,18 @@ map  <F4>      :ls<cr>:b
 " Make the current buffer a scratch buffer
 map  <M-F10>   :setlocal buftype=nofile<cr>
 
+" Use %% to expand path of current buffer
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+" Map umlauts to usual keys from US keyboards
+noremap ö   ;
+noremap Ö   :
+noremap ü   {
+noremap Ü   [
+" ä is used as mapleader
+noremap Ä   }
+" noremap ä   \
+
 " if vim is called without a file, then set buftype to scratch
 " ok, this is like emacs, but handy ;)
 if argc() == 0
@@ -424,7 +440,7 @@ endif
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
 " Start an editor session by loading the Session.vim in the current dir
-nnoremap ,s    :so Session.vim<cr>
+nnoremap <Leader>s    :so Session.vim<cr>
 
 " Let :W behave as :w
 nmap :W :w
@@ -645,9 +661,9 @@ function! Unite_gitprojectroot()
 
 " non-fancy version without project root:
 " nnoremap <silent> ,u :Unite buffer file_rec/git file<CR>
-nnoremap <silent> ,u :call Unite_gitprojectroot()<cr>
-nnoremap <silent> ,l :Unite line<CR>
-nnoremap <silent> ,g :Unite grep:.<CR>
+nnoremap <silent> <Leader>u :call Unite_gitprojectroot()<cr>
+nnoremap <silent> <Leader>l :Unite line<CR>
+nnoremap <silent> <Leader>g :Unite grep:.<CR>
 call unite#custom#profile('default', 'context', {
 \   'start_insert': 1,
 \   'winheight': 10,
