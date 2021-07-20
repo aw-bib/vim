@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Wed, 2020/10/21 12:41:45 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2021/07/20 12:58:51 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -367,6 +367,10 @@ map  <Leader>-        <ESC>:resize -10 <CR>
 map  <Leader>+        <ESC>:resize +10 <CR>
 map  <Leader>_        <ESC>:vertical resize -20 <CR>
 map  <Leader>*        <ESC>:vertical resize +20 <CR>
+nnoremap <M-j> :resize -1<CR>
+nnoremap <M-k> :resize +1<CR>
+nnoremap <M-h> :vertical resize -1<CR>
+nnoremap <M-l> :vertical resize +1<CR>
 " set the width of the current window to 76 chars (= normal edition width)
 map  <Leader>7        :vertical resize 76<cr>
 " Jump to tag under cursor (otherwise ugly on german keyboards...)
@@ -384,9 +388,9 @@ vmap <S-TAB>   <
 " :set hlsearch, then select text * will highlight all occurrences
 vmap * "yy:let @/='\(' . @y . '\)'<cr>
 
-" In normal mode: TAB and Shift-TAB to change buffers
-nmap <TAB>     :bn<CR>
-nmap <S-TAB>   :bp<CR>
+" "" In normal mode: TAB and Shift-TAB to change buffers
+" "nmap <TAB>     :bn<CR>
+" "nmap <S-TAB>   :bp<CR>
 
 " Ctrl-C does esc, but doesn't check abbrevieations, C-[ does so remap
 " Ctrl-C to real Esc.
@@ -451,7 +455,7 @@ function! NewlineWithEnter()
     if !&modifiable
       execute "normal! \<CR>"
     else
-      execute "normal! O\<esc>"
+      execute "normal! o\<esc>"
     endif
 endfunction
 nnoremap <CR> :call NewlineWithEnter()<CR>
@@ -585,6 +589,14 @@ let g:syntastic_javascript_checkers = ['jshint']
 " shorten syntastic statusline output using marker symbols
 let g:syntastic_stl_format = "[%E{↯ %fe #%e}%B{, }%W{⁈ %fw #%w}]"
 
+
+" " ALE
+" "let g:ale_lint_on_insert_leave = 1
+" "let g:ale_lint_on_text_changed = 0
+" "let g:ale_lint_on_save = 1
+" "let g:ale_lint_on_enter = 0
+" "let g:ale_lint_on_filetype_changed = 0
+
 " adopt hight to match the number of errors This avoids a empty space
 " in case of only one or two messages.
 " cf. https://github.com/scrooloose/syntastic/issues/1678
@@ -646,6 +658,9 @@ else
         set t_Co=16
         colorscheme default
     endif
+    " some Terminals do not support undercurl (eg. xterm) Use underline which
+    " is safe. Cf. https://github.com/vim/vim/issues/6174
+    highlight SpellBad cterm=underline
 endif
 
 let g:solarized_diffmode="high"
@@ -759,7 +774,7 @@ let g:vimwiki_listsyms = ' ○◐●x'"
 let g:vimwiki_hl_headers = 1
 " use usual syntax hightlighting for code blocks marked like github
 let automatic_nested_syntaxes = 1
-" define wikis available, switch with ,ws
+" define wikis available, switch with <Leader>ws
 " use symlinks in case they should live on some cloud storage etc.
 let g:vimwiki_list = [
     \{'path': "$HOME/vimwiki/work", 'syntax': 'markdown', 'ext': '.md'},
