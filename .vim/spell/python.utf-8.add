@@ -1,0 +1,15 @@
+DataCite
+tasklet
+pylint/!
+pylint
+flake8
+noqa
+C0103
+datacite
+curdir
+recid
+basedir
+dir
+param
+Init
+metadata/!
