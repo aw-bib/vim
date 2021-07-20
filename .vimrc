@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2021/07/20 12:58:51 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2021/07/20 17:15:17 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -27,7 +27,7 @@ set t_vb=
 set visualbell
 
 " formatoptions:  Options for the "text format" command ("gq")
-set formatoptions=tcrqn
+set formatoptions=tcrqnj
 
 " hidden:  Allow "hidden" buffers.  A must-have!
 set hidden
@@ -123,10 +123,6 @@ set ruler
 set autowrite
 set cpt=.,b,u
 
-" Do not set encoding anymore to display file encoding properly and
-" prevent vim from recoding on the fly.
-"-" set encoding=utf-8
-
 " These chars are utf and should work in general, though they might
 " break in some strange terminals. The default ^I is unreadable.
 " Paragraph »·↩…↪¶¬↲↳
@@ -135,10 +131,7 @@ set showbreak=↪
 set list
 
 " Get rid of the toolbar in GUI version
-set guioptions-=T
-set guioptions+=c
-set guioptions=aegimrLtc
-set guioptions=aegirLtc
+set guioptions=acegiLrt
 
 " Always use vertical diff
 set diffopt+=vertical
@@ -166,15 +159,12 @@ if (version >= 700)
    " Spell checking
    " - british english:
    nnoremap <Leader>Se   :setlocal spell spelllang=en_gb<cr>
-   " - galelic
+   " - gaidhlig
    nnoremap <Leader>Sg   :setlocal spell spelllang=en_gd<cr>
    " - german
    nnoremap <Leader>Sd   :setlocal spell spelllang=de<cr>
    " ,? in normal mode is ctrl-x-s
    nnoremap <Leader>?    is
-
-   " :te for tabedit (:te is normally tear-off in w32-gui
-   nmap :te    :tabe
 
    " vim 7 introduces undo branches. Map old undo functions to the new ones
    nmap u      g-
@@ -207,18 +197,11 @@ if has("folding")
 endif
 
 " Collect all the backup and swap files in one dir First try a local
-" subdir (intended for very important files to keep backup end swap
+" subdir (intended for very important files to keep backup and swap
 " files within the central backup), then the global ones. Add /tmp for
 " vim to be able to always open a swap/backup file
 set backupdir=./.vimswp,$HOME/tmp,/tmp
 set directory=./.vimswp,$HOME/tmp,/tmp
-
-" Using viminfo to cause each invocation of vim to return to
-" previous position Note: you may have to change ~/.viminfo to
-" point to a directory/file of your choice.  By Dr. Charles
-" Campbell.
-""" set viminfo='10,\"100,:20,n~/.viminfo
-""" set shada=%,'50,\"100,:100,n~/.nviminfo
 
 autocmd BufReadPost * if line("'\"")|execute("normal `\"")|endif
 
@@ -226,7 +209,7 @@ autocmd BufReadPost * if line("'\"")|execute("normal `\"")|endif
 " files, that is, there is A difference between BufRead and
 " BufNewFile!  Empty files are _new_ files.
 " ADDITIONALLY:
-" from V6 on auto commands can be replaced largely by file type
+" From v6 on auto commands can be replaced largely by file type
 " plugins (which gives a more readable config...)!
 
 " Use the augroups only to define additional filetypes, then
@@ -297,15 +280,6 @@ augroup Physics
   autocmd BufNewFile  *.fh                    set filetype=form
 augroup END
 
-augroup wiki
-  autocmd!
-  autocmd BufRead     wwwzb.fz-juelich.de*    set filetype=mediawiki
-  " We hardly ever come across Modula-2, however we have a lot of
-  " markdown => prefer Markdown
-  autocmd BufNewFile,BufReadPost *.md         set filetype=markdown
-  autocmd BufNewFile,BufReadPost github.com*  set filetype=markdown
-augroup END
-
 augroup mud
   autocmd!
   autocmd BufRead     *.mg                    set filetype=text
@@ -371,7 +345,7 @@ nnoremap <M-j> :resize -1<CR>
 nnoremap <M-k> :resize +1<CR>
 nnoremap <M-h> :vertical resize -1<CR>
 nnoremap <M-l> :vertical resize +1<CR>
-" set the width of the current window to 76 chars (= normal edition width)
+" set the width of the current window to 76 chars (= normal editing width)
 map  <Leader>7        :vertical resize 76<cr>
 " Jump to tag under cursor (otherwise ugly on german keyboards...)
 map  <Leader>,        
@@ -380,10 +354,6 @@ map  <Leader>.        <C-W>}
 
 " Run makeprg
 map  <Leader>m        :make<cr>
-
-" In visual mode: TAB and Shift-TAB for indenting
-vmap <TAB>     >
-vmap <S-TAB>   <
 
 " :set hlsearch, then select text * will highlight all occurrences
 vmap * "yy:let @/='\(' . @y . '\)'<cr>
@@ -426,12 +396,16 @@ map  <M-F10>   :setlocal buftype=nofile<cr>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 " Map umlauts to usual keys from US keyboards
+" repeat last f, t, F, T
 noremap ö   ;
+" open command line
 noremap Ö   :
+" paragraph backwards
 noremap ü   {
 noremap Ü   [
 " ä is used as mapleader
 noremap Ä   }
+" This is the map leader:
 " noremap ä   \
 
 " if vim is called without a file, then set buftype to scratch
@@ -573,6 +547,11 @@ endif
 silent! call pathogen#infect()
 call pathogen#helptags()
 
+" vim8 introduces package management almost like pathogen
+" load them and don't forget to generate the help-tags
+packloadall
+silent! helptags ALL
+
 " syntastic
 let g:syntastic_error_symbol             =  ">>"
 let g:syntastic_warning_symbol           =  "?!"
@@ -588,14 +567,6 @@ let g:syntastic_javascript_checkers = ['jshint']
 
 " shorten syntastic statusline output using marker symbols
 let g:syntastic_stl_format = "[%E{↯ %fe #%e}%B{, }%W{⁈ %fw #%w}]"
-
-
-" " ALE
-" "let g:ale_lint_on_insert_leave = 1
-" "let g:ale_lint_on_text_changed = 0
-" "let g:ale_lint_on_save = 1
-" "let g:ale_lint_on_enter = 0
-" "let g:ale_lint_on_filetype_changed = 0
 
 " adopt hight to match the number of errors This avoids a empty space
 " in case of only one or two messages.
@@ -622,6 +593,7 @@ if has('gui_running')
    " let font = {"name" : "RobotoMono Nerd Font", "size" : "10.5"}
    " let font = {"name" : "OverpassMono Nerd Font", "size" : "10.5"}
    " let font = {"name" : "mononoki Nerd Font", "size" : "10.5"}
+
    let font = {"name" : "BlexMono Nerd Font", "size" : "Medium 10.5"}
 
    " check if font exist and set it only if it is available
@@ -658,9 +630,13 @@ else
         set t_Co=16
         colorscheme default
     endif
-    " some Terminals do not support undercurl (eg. xterm) Use underline which
-    " is safe. Cf. https://github.com/vim/vim/issues/6174
+    " Some Terminals do not support undercurl (eg. xterm). In this
+    " case the highlighting is effectively disabled :S
+    " Use " underline which is safe.
+    " Cf. https://github.com/vim/vim/issues/6174
     highlight SpellBad cterm=underline
+    " Force italics for comments, like GUI
+    highlight Comment cterm=italic
 endif
 
 let g:solarized_diffmode="high"
@@ -810,5 +786,3 @@ if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
 
-" Force italics for comments, like GUI
-highlight Comment cterm=italic
