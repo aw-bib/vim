@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Tue, 2021/07/20 17:15:17 arwagner l00lnxwagner.desy.de>
+" Last change: <Mon, 2021/09/20 12:05:19 arwagner l00lnxwagner.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -538,6 +538,19 @@ if filereadable(expand("$HOME/.vimrc.local"))
     source $HOME/.vimrc.local
 endif
 
+" Access system clipboard in tmux
+" cf. https://unix.stackexchange.com/questions/645475/
+let g:clipboard = {
+  \   'name': 'Tmux',
+  \   'copy': {
+  \      '*': ['tmux', 'load-buffer', '-'],
+  \    },
+  \   'paste': {
+  \      '*': ['tmux', 'save-buffer', '-'],
+  \   },
+  \   'cache_enabled': 1,
+  \ }
+
 "----------------------------------------------------------------------
 " Package specific configs
 "----------------------------------------------------------------------
@@ -563,10 +576,11 @@ let g:syntastic_always_populate_loc_list =  1
 let g:syntastic_auto_loc_list            =  0
 let g:syntastic_check_on_open            =  0
 let g:syntastic_check_on_wq              =  0
-let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_checkers      = ['jshint']
 
-" shorten syntastic statusline output using marker symbols
+" shorten syntastic statusline output using marker
 let g:syntastic_stl_format = "[%E{↯ %fe #%e}%B{, }%W{⁈ %fw #%w}]"
+let g:syntastic_aggregate_errors = 1
 
 " adopt hight to match the number of errors This avoids a empty space
 " in case of only one or two messages.
@@ -680,7 +694,7 @@ autocmd User fugitive
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " Explore the history of the current file
-abbr Ghistory  :Glog -- %<cr>:copen<cr>
+abbr Ghistory  :Gclog -- %<cr>:copen<cr>
 
 " Customize lightline
 " - Drop mode marker as we have a full line for it
@@ -737,7 +751,9 @@ function! LightlineFiletype()
     endif
 endfunction
 function! LightlineFugitive()
-    let branch = fugitive#head()
+    " let branch = fugitive#head()
+    " Fugitive changed the API from fugitive#head() -> FugitiveHead()
+    let branch = FugitiveHead()
     " shorten branch names to max 10 chars
     if len(branch) > 10
        let branch = ''.branch[0:9].'…'
