@@ -4,7 +4,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "
 "----------------------------------------------------------------------
-" Last change: <Mon, 2021/09/20 12:05:19 arwagner l00lnxwagner.desy.de>
+" Last change: <Tue, 2025/02/11 13:10:10 arwagner l00lnxaw.desy.de>
 "----------------------------------------------------------------------
 
 set titlestring=%f%=\ %(%M%R%)\ %y
@@ -190,6 +190,21 @@ endif
 if (version < 703)
     call add(g:pathogen_disabled, 'gundo')
 endif
+
+if (version > 704)
+    " word count function for the status line
+    let g:word_count=wordcount().words
+    function WordCount()
+        if has_key(wordcount(),'visual_words')
+            let g:word_count=wordcount().visual_words."/".wordcount().words " count selected words
+        else
+            let g:word_count=wordcount().cursor_words."/".wordcount().words " or shows words 'so far'
+        endif
+        return g:word_count
+    endfunction
+
+endif
+
 
 if has("folding")
    " By default: don't fold text automatically
@@ -524,7 +539,7 @@ function! s:tableMarkdown() range
     exe "'<,'>s/-|/ |/g"
     exe "'<,'>s/|-/| /g"
     exe "'<,'>s/^| \\|\\s*|$\\||//g"
-    exe "'<,'>!pandoc -f markdown -t markdown_github"
+    exe "'<,'>!pandoc -f markdown -t gfm"
 endfunction
 command! -range=% TablePandoc :call <SID>tableMarkdown()
 
@@ -560,36 +575,21 @@ let g:clipboard = {
 silent! call pathogen#infect()
 call pathogen#helptags()
 
+if (version >= 800)
 " vim8 introduces package management almost like pathogen
 " load them and don't forget to generate the help-tags
-packloadall
+    packloadall
+endif
 silent! helptags ALL
 
-" syntastic
-let g:syntastic_error_symbol             =  ">>"
-let g:syntastic_warning_symbol           =  "?!"
-let g:syntastic_style_error_symbol       =  "->"
-let g:syntastic_style_warning_symbol     =  "≈≈"
-
-let g:syntastic_always_populate_loc_list =  1
-" TODO autoopen seems to confuses lightline(?)
-let g:syntastic_auto_loc_list            =  0
-let g:syntastic_check_on_open            =  0
-let g:syntastic_check_on_wq              =  0
-let g:syntastic_javascript_checkers      = ['jshint']
-
-" shorten syntastic statusline output using marker
-let g:syntastic_stl_format = "[%E{↯ %fe #%e}%B{, }%W{⁈ %fw #%w}]"
-let g:syntastic_aggregate_errors = 1
-
-" adopt hight to match the number of errors This avoids a empty space
-" in case of only one or two messages.
-" cf. https://github.com/scrooloose/syntastic/issues/1678
-function! SyntasticCheckHook(errors)
-    if !empty(a:errors)
-        let g:syntastic_loc_list_height = min([len(a:errors), 5])
-    endif
-endfunction
+" ALE
+let g:ale_sign_error         = ">>"
+let g:ale_sign_warning       = "?!"
+let g:ale_sign_style_error   = "->"
+let g:ale_sign_style_warning = "≈≈"
+let g:ale_sign_info          = 'ii'
+let g:ale_set_loclist = 1
+let g:ale_change_sign_column_color = 0
 
 " Setup solarized colour scheme with light background and high
 " contrast diff mode (giving green/red blocks rather than text)
@@ -709,8 +709,12 @@ let g:lightline = {
   \   'active': {
   \     'left':[ [ 'gitbranch', 'paste' ],
   \              [ 'readonly', 'filename'],
-  \              [ 'syntastic' ],
-  \     ]
+  \              [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ],
+  \     ],
+  \     'right': [ [ 'lineinfo' ],
+  \              [ 'percent', 'wordcount' ],
+  \              [ 'fileformat', 'fileencoding', 'filetype' ]
+  \            ]
   \   },
   \   'inactive': {
   \     'left':[ [ 'gitbranch' ],
@@ -721,15 +725,34 @@ let g:lightline = {
   \     'lineinfo': '%2v:%3l',
   \   },
   \   'component_function': {
+  \     'wordcount': 'WordCount',
   \     'gitbranch': 'LightlineFugitive',
   \     'filename': 'LightlineFilename',
   \     'fileformat': 'LightlineFileformat',
   \     'filetype': 'LightlineFiletype',
-  \     'syntastic': 'SyntasticStatuslineFlag',
   \   },
   \   'separator': { 'left': '', 'right': '' },
   \   'subseparator': { 'left': '', 'right': '' }
   \ }
+
+
+" configure lightline-ale
+let g:lightline.component_expand = {
+    \  'linter_checking': 'lightline#ale#checking',
+    \  'linter_infos': 'lightline#ale#infos',
+    \  'linter_warnings': 'lightline#ale#warnings',
+    \  'linter_errors': 'lightline#ale#errors',
+    \  'linter_ok': 'lightline#ale#ok',
+    \ }
+
+let g:lightline.component_type = {
+      \     'linter_checking': 'right',
+      \     'linter_infos': 'right',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'right',
+      \ }
+
 
 function! LightlineFilename()
   let filename = expand('%:t') !=# '' ? expand('%:t') : 'No Name'
@@ -795,6 +818,7 @@ augroup vimwikigroup
     autocmd FileType vimwiki map c :call ToggleCalendar()<cr>
 augroup end
 
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " Load local changes to the above to adopt to user specific local
 " needs. This is the second call
