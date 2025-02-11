@@ -1,0 +1,71 @@
+# Snippet for creating new generic LaTeX environments
+snippet env "New LaTeX environment" b
+\begin{${1:environment}}
+    $2
+\end{$1}
+$0
+endsnippet
+
+snippet tt "The \texttt{} command for typewriter-style font"
+\texttt{$1}$0
+endsnippet
+
+snippet emph "The \emph{} command"
+\emph{$1}$0
+endsnippet
+
+snippet href "The hyperref package's \href{}{} command (for url links)"
+\href{${1:url}}{${2:display name}}$0
+endsnippet
+
+snippet alertblock "Add a centred alert block"
+\begin{center}
+	\begin{minipage}{$1\textwidth}
+		\begin{alertblock}{\centering $2}
+			\begin{center}
+				$3
+			\end{center}
+		\end{alertblock}
+	\end{minipage}
+\end{center}
+
+$0
+endsnippet
+
+snippet fontsize "Add a custom font size"
+\fontsize{$1:font}{$2:spacing}{$0}
+endsnippet
+
+snippet block "Add a centred block"
+\begin{center}
+	\begin{minipage}{$1\textwidth}
+		\begin{block}{\centering $2}
+			\begin{center}
+				$3
+			\end{center}
+		\end{block}
+	\end{minipage}
+\end{center}
+
+$0
+endsnippet
+
+snippet frame "Add a new frame"
+\begin{frame}
+	\frametitle{$1}
+
+	$0
+\end{frame}
+endsnippet
+
+snippet columns "Add columns"
+\begin{columns}
+	\begin{column}{$1\textwidth}
+		$0
+	\end{column}
+
+	\begin{column}{$2\textwidth}
+	\end{column}
+\end{columns}
+
+endsnippet
